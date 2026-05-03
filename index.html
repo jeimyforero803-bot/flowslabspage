@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FlowsLabs | Datos que hablan, procesos que fluyen</title>
+  <meta name="description" content="FlowsLabs — IA, Automatización & Marketing Digital. Bogotá, Colombia.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="loading">
+
+  <!-- ══ LOADER ══ -->
+  <div id="loader">
+    <div class="ldr-inner">
+      <img src="LOGOS/LOGO COMPLETO 2.png" alt="FlowsLabs" class="ldr-logo">
+      <div class="ldr-bar"><div id="ldrFill"></div></div>
+      <span id="ldrPct">0%</span>
+    </div>
+  </div>
+
+  <!-- ══ CURSOR ══ -->
+  <div id="cursorDot"></div>
+  <div id="cursorRing"></div>
+  <div id="cursorTrail"></div>
+
+  <!-- ══ GRAIN ══ -->
+  <div class="grain"></div>
+
+
+  <!-- ══════════════ NAVBAR ══════════════ -->
+  <nav id="navbar" class="navbar">
+    <div class="nav-wrap">
+      <a href="#inicio" class="nav-logo">
+        <img src="LOGOS/LOGO COMPLETO 2.png" alt="FlowsLabs">
+      </a>
+      <ul id="navLinks" class="nav-links">
+        <li><a href="#inicio" class="active">Inicio</a></li>
+        <li><a href="#enfoque">Nuestro enfoque</a></li>
+        <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+      <a href="#contacto" class="btn-cta magnetic">Contáctanos</a>
+      <button id="hamburger" class="hamburger" aria-label="Menú">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ══════════════ HERO ══════════════ -->
+  <section id="inicio" class="hero">
+    <canvas id="threeCanvas"></canvas>
+
+    <div class="orbit-rings left-orbit" aria-hidden="true">
+      <div class="orb r1"></div><div class="orb r2"></div><div class="orb r3"></div>
+      <div class="orb-cross ov"></div><div class="orb-cross oh"></div>
+    </div>
+    <div class="orbit-rings right-orbit" aria-hidden="true">
+      <div class="orb r1"></div><div class="orb r2"></div><div class="orb r3"></div>
+      <div class="orb-cross ov"></div><div class="orb-cross oh"></div>
+    </div>
+
+    <div class="hero-center">
+      <div id="heroLogo" class="hero-logo-wrap">
+        <img src="LOGOS/LOGO COMPLETO 2.png" alt="FlowsLabs" class="hero-main-logo">
+      </div>
+      <p id="heroTagline" class="hero-tagline">Datos que hablan, procesos que fluyen.</p>
+      <div id="heroCard" class="hero-card">
+        <p>Desarrollamos soluciones con inteligencia artificial para optimizar procesos, automatizar tareas y mejorar la eficiencia de las empresas.</p>
+        <div class="hero-card-btns">
+          <a href="#contacto" class="btn-orange magnetic">Contáctanos</a>
+          <a href="#servicios" class="btn-ghost">Ver servicios</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-cue" aria-hidden="true">
+      <div class="scroll-line"><div class="scroll-dot"></div></div>
+      <span>SCROLL</span>
+    </div>
+  </section>
+
+  <!-- ══════════════ NUESTRO ENFOQUE ══════════════ -->
+  <section id="enfoque" class="s-enfoque">
+    <div class="accent-bars">
+      <div class="ab orange-ab"></div>
+      <div class="ab teal-ab"></div>
+    </div>
+    <div class="container">
+      <div class="enfoque-grid">
+
+        <div class="enfoque-left reveal-left">
+          <h2 class="dh2 orange">NUESTRO<br>ENFOQUE</h2>
+          <p>En FlowsLabs desarrollamos soluciones tecnológicas con inteligencia artificial para optimizar procesos y mejorar la interacción entre empresas y sus clientes. Creamos herramientas que automatizan tareas, reducen tiempos de respuesta y aumentan la eficiencia.</p>
+          <p>Somos un equipo enfocado en entender las necesidades reales de cada proyecto para diseñar soluciones funcionales, accesibles y escalables.</p>
+          <div class="vm-cards">
+            <div class="vm-card reveal-up">
+              <div class="vmc-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="2" fill="currentColor"/></svg>
+              </div>
+              <div>
+                <strong>Visión</strong>
+                <p>Democratizar el acceso a la <em>Inteligencia Artificial</em> y el análisis de datos para empresas y corporaciones, optimizando sus procesos mediante automatizaciones inteligentes.</p>
+              </div>
+            </div>
+            <div class="vm-card reveal-up" data-delay="0.15">
+              <div class="vmc-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3 6.3 6.9 1-5 4.9 1.2 6.8L12 18l-6.1 3 1.2-6.8-5-4.9 6.9-1z"/></svg>
+              </div>
+              <div>
+                <strong>Misión</strong>
+                <p>Convertirnos en la firma líder en soluciones tecnológicas integrales, fusionando la ingeniería de datos e IA de última generación con el marketing digital estratégico.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="enfoque-right reveal-right">
+          <div class="neural-wrap">
+            <!-- HUD frame corners -->
+            <div class="and-corner and-tl"></div><div class="and-corner and-tr"></div>
+            <div class="and-corner and-bl"></div><div class="and-corner and-br"></div>
+            <div class="and-hud-badge and-top">NEURAL · FL-09 · ONLINE</div>
+            <div class="and-hud-badge and-bot">AI CORE · ACTIVE</div>
+            <div class="and-scan"></div>
+
+            <canvas id="neuralCanvas" class="neural-canvas"></canvas>
+            <div class="neural-data-tags">
+              <div class="ndt ndt-1">NODES: 256</div>
+              <div class="ndt ndt-2">CONNECTIONS: 1.2K</div>
+              <div class="ndt ndt-3">STATUS: LEARNING</div>
+            </div>
+            <svg style="display:none">
+              <defs>
+                <linearGradient id="metalH" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%"   stop-color="#080F18"/>
+                  <stop offset="28%"  stop-color="#162840"/>
+                  <stop offset="55%"  stop-color="#223A58"/>
+                  <stop offset="78%"  stop-color="#162840"/>
+                  <stop offset="100%" stop-color="#080F18"/>
+                </linearGradient>
+                <linearGradient id="metalV" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%"   stop-color="#1E3A52"/>
+                  <stop offset="50%"  stop-color="#162A3C"/>
+                  <stop offset="100%" stop-color="#080F18"/>
+                </linearGradient>
+                <linearGradient id="metalArm" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%"   stop-color="#060D16"/>
+                  <stop offset="45%"  stop-color="#1E3A58"/>
+                  <stop offset="100%" stop-color="#060D16"/>
+                </linearGradient>
+                <linearGradient id="chest" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%"   stop-color="#1A3248"/>
+                  <stop offset="100%" stop-color="#0A1B2C"/>
+                </linearGradient>
+                <linearGradient id="visorGlow" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%"   stop-color="rgba(249,115,22,0)"/>
+                  <stop offset="20%"  stop-color="#F97316"/>
+                  <stop offset="50%"  stop-color="#FFCA80"/>
+                  <stop offset="80%"  stop-color="#F97316"/>
+                  <stop offset="100%" stop-color="rgba(249,115,22,0)"/>
+                </linearGradient>
+                <radialGradient id="coreRad" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%"   stop-color="#FFE0A0"/>
+                  <stop offset="45%"  stop-color="#F97316"/>
+                  <stop offset="100%" stop-color="rgba(249,115,22,0)"/>
+                </radialGradient>
+                <radialGradient id="ambTeal" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%"   stop-color="rgba(26,100,120,0.35)"/>
+                  <stop offset="100%" stop-color="rgba(26,100,120,0)"/>
+                </radialGradient>
+                <radialGradient id="ambOrange" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%"   stop-color="rgba(249,115,22,0.4)"/>
+                  <stop offset="100%" stop-color="rgba(249,115,22,0)"/>
+                </radialGradient>
+                <filter id="fg1" x="-80%" y="-80%" width="260%" height="260%">
+                  <feGaussianBlur in="SourceGraphic" stdDeviation="6"/>
+                </filter>
+                <filter id="fg2" x="-150%" y="-150%" width="400%" height="400%">
+                  <feGaussianBlur in="SourceGraphic" stdDeviation="14"/>
+                </filter>
+                <filter id="fg3" x="-30%" y="-30%" width="160%" height="160%">
+                  <feGaussianBlur in="SourceGraphic" stdDeviation="3"/>
+                </filter>
+              </defs>
+
+              <!-- ── AMBIENT GLOW ── -->
+              <ellipse cx="160" cy="300" rx="130" ry="250" fill="url(#ambTeal)" opacity="0.6"/>
+              <ellipse cx="160" cy="185" rx="60"  ry="80"  fill="url(#ambOrange)" filter="url(#fg2)" opacity="0.5" class="and-core-glow"/>
+
+              <!-- ── GROUND SHADOW ── -->
+              <ellipse cx="160" cy="548" rx="90" ry="10" fill="rgba(26,100,120,0.3)" filter="url(#fg3)"/>
+
+              <!-- ── LEGS ── -->
+              <!-- Left thigh -->
+              <path d="M104,348 L104,442 Q108,452 128,454 Q148,452 152,442 L152,348 Q140,340 128,340 Q116,340 104,348Z" fill="url(#metalH)"/>
+              <rect x="110" y="355" width="36" height="8"  rx="3" fill="#1E3A52" opacity="0.7"/>
+              <rect x="110" y="368" width="36" height="5"  rx="2" fill="#1A6478" opacity="0.45"/>
+              <rect x="110" y="378" width="36" height="5"  rx="2" fill="#1A6478" opacity="0.3"/>
+              <rect x="110" y="388" width="36" height="5"  rx="2" fill="#1A6478" opacity="0.25"/>
+              <!-- Right thigh -->
+              <path d="M168,348 L168,442 Q172,452 192,454 Q212,452 216,442 L216,348 Q204,340 192,340 Q180,340 168,348Z" fill="url(#metalH)"/>
+              <rect x="174" y="355" width="36" height="8"  rx="3" fill="#1E3A52" opacity="0.7"/>
+              <rect x="174" y="368" width="36" height="5"  rx="2" fill="#1A6478" opacity="0.45"/>
+              <rect x="174" y="378" width="36" height="5"  rx="2" fill="#1A6478" opacity="0.3"/>
+              <rect x="174" y="388" width="36" height="5"  rx="2" fill="#1A6478" opacity="0.25"/>
+
+              <!-- Left knee -->
+              <circle cx="128" cy="452" r="18" fill="#0A1520" stroke="#1A6478" stroke-width="1.8"/>
+              <circle cx="128" cy="452" r="11" fill="#162840"/>
+              <circle cx="128" cy="452" r="5.5" fill="#1A6478" opacity="0.85" class="and-knee-glow"/>
+              <!-- Right knee -->
+              <circle cx="192" cy="452" r="18" fill="#0A1520" stroke="#1A6478" stroke-width="1.8"/>
+              <circle cx="192" cy="452" r="11" fill="#162840"/>
+              <circle cx="192" cy="452" r="5.5" fill="#1A6478" opacity="0.85" class="and-knee-glow"/>
+
+              <!-- Left shin -->
+              <path d="M113,466 L112,530 Q120,544 128,544 Q136,544 144,530 L143,466 Q136,458 128,458 Q120,458 113,466Z" fill="url(#metalV)"/>
+              <line x1="117" y1="476" x2="139" y2="476" stroke="#1A6478" stroke-width="1"   opacity="0.45"/>
+              <line x1="117" y1="492" x2="139" y2="492" stroke="#1A6478" stroke-width="0.8" opacity="0.3"/>
+              <line x1="117" y1="510" x2="139" y2="510" stroke="#1A6478" stroke-width="0.8" opacity="0.25"/>
+              <!-- Right shin -->
+              <path d="M177,466 L176,530 Q184,544 192,544 Q200,544 208,530 L207,466 Q200,458 192,458 Q184,458 177,466Z" fill="url(#metalV)"/>
+              <line x1="181" y1="476" x2="203" y2="476" stroke="#1A6478" stroke-width="1"   opacity="0.45"/>
+              <line x1="181" y1="492" x2="203" y2="492" stroke="#1A6478" stroke-width="0.8" opacity="0.3"/>
+              <line x1="181" y1="510" x2="203" y2="510" stroke="#1A6478" stroke-width="0.8" opacity="0.25"/>
+
+              <!-- Left foot -->
+              <path d="M108,534 Q128,548 148,534 L152,544 Q128,562 104,544Z" fill="#0A1520"/>
+              <path d="M108,534 Q128,548 148,534 L147,541 Q128,554 109,541Z" fill="#162840"/>
+              <ellipse cx="128" cy="558" rx="30" ry="5" fill="url(#ambTeal)" opacity="0.5"/>
+              <!-- Right foot -->
+              <path d="M172,534 Q192,548 212,534 L216,544 Q192,562 168,544Z" fill="#0A1520"/>
+              <path d="M172,534 Q192,548 212,534 L211,541 Q192,554 173,541Z" fill="#162840"/>
+              <ellipse cx="192" cy="558" rx="30" ry="5" fill="url(#ambTeal)" opacity="0.5"/>
+
+              <!-- ── PELVIS / HIP ── -->
+              <path d="M96,314 L100,348 Q118,358 160,360 Q202,358 220,348 L224,314 Q196,332 160,334 Q124,332 96,314Z" fill="url(#metalH)"/>
+              <path d="M112,328 L208,328" stroke="#1A6478" stroke-width="1.2" opacity="0.35"/>
+              <circle cx="128" cy="344" r="7"  fill="#0E1E30" stroke="#1A6478" stroke-width="1.2"/>
+              <circle cx="192" cy="344" r="7"  fill="#0E1E30" stroke="#1A6478" stroke-width="1.2"/>
+              <circle cx="128" cy="344" r="3"  fill="#1A6478" opacity="0.7"/>
+              <circle cx="192" cy="344" r="3"  fill="#1A6478" opacity="0.7"/>
+
+              <!-- ── TORSO ── -->
+              <path d="M76,130 Q62,150 66,205 L70,314 Q106,340 160,342 Q214,340 250,314 L254,205 Q258,150 244,130 Q208,118 160,116 Q112,118 76,130Z" fill="url(#metalH)"/>
+              <!-- Chest plate front -->
+              <path d="M116,134 L116,238 Q138,250 160,252 Q182,250 204,238 L204,134 Q182,126 160,124 Q138,126 116,134Z" fill="url(#chest)"/>
+              <!-- Side armor panels -->
+              <path d="M76,148 L88,145 L84,220 L72,224Z" fill="#060D16" opacity="0.85"/>
+              <path d="M244,148 L232,145 L236,220 L248,224Z" fill="#060D16" opacity="0.85"/>
+              <!-- Pectoral plates -->
+              <path d="M118,140 L158,136 L158,184 Q138,192 120,182Z" fill="#1A3248"/>
+              <path d="M202,140 L162,136 L162,184 Q182,192 200,182Z" fill="#1A3248"/>
+              <path d="M122,144 L155,140 L155,162 Q138,168 124,162Z" fill="#264860" opacity="0.5"/>
+              <path d="M198,144 L165,140 L165,162 Q182,168 196,162Z" fill="#264860" opacity="0.5"/>
+              <!-- Abs plates -->
+              <rect x="128" y="244" width="64" height="19" rx="5" fill="#0C1C2C"/>
+              <rect x="128" y="267" width="64" height="18" rx="5" fill="#0C1C2C"/>
+              <rect x="128" y="289" width="64" height="18" rx="5" fill="#0C1C2C"/>
+              <rect x="130" y="246" width="60" height="8"  rx="3" fill="#1A3050" opacity="0.55"/>
+              <rect x="130" y="269" width="60" height="7"  rx="3" fill="#1A3050" opacity="0.45"/>
+              <rect x="130" y="291" width="60" height="7"  rx="3" fill="#1A3050" opacity="0.4"/>
+              <!-- Side rib lines -->
+              <line x1="94"  y1="162" x2="114" y2="157" stroke="#1A6478" stroke-width="1.3" opacity="0.45"/>
+              <line x1="90"  y1="180" x2="113" y2="176" stroke="#1A6478" stroke-width="1.3" opacity="0.38"/>
+              <line x1="89"  y1="200" x2="112" y2="198" stroke="#1A6478" stroke-width="1.3" opacity="0.32"/>
+              <line x1="88"  y1="222" x2="112" y2="222" stroke="#1A6478" stroke-width="1"   opacity="0.28"/>
+              <line x1="226" y1="162" x2="206" y2="157" stroke="#1A6478" stroke-width="1.3" opacity="0.45"/>
+              <line x1="230" y1="180" x2="207" y2="176" stroke="#1A6478" stroke-width="1.3" opacity="0.38"/>
+              <line x1="231" y1="200" x2="208" y2="198" stroke="#1A6478" stroke-width="1.3" opacity="0.32"/>
+              <line x1="232" y1="222" x2="208" y2="222" stroke="#1A6478" stroke-width="1"   opacity="0.28"/>
+
+              <!-- ── ENERGY CORE ── -->
+              <circle cx="160" cy="200" r="44" fill="url(#ambOrange)" filter="url(#fg2)" class="and-core-glow"/>
+              <circle cx="160" cy="200" r="24" fill="#08111C" stroke="#F97316" stroke-width="1.8"/>
+              <circle cx="160" cy="200" r="17" fill="#101820" stroke="#F97316" stroke-width="1"  opacity="0.65"/>
+              <circle cx="160" cy="200" r="11" fill="url(#coreRad)" class="and-core-inner"/>
+              <circle cx="160" cy="200" r="5"  fill="#FFE8B0" class="and-core-center"/>
+              <!-- Core ring segments -->
+              <path d="M138,200 A22,22 0 0,1 160,178" stroke="#F97316" stroke-width="2.2" fill="none" opacity="0.9"/>
+              <path d="M182,200 A22,22 0 0,1 160,222" stroke="#F97316" stroke-width="2.2" fill="none" opacity="0.9"/>
+              <path d="M150,180 A22,22 0 0,0 138,200" stroke="#F97316" stroke-width="1"   fill="none" opacity="0.45"/>
+              <path d="M170,220 A22,22 0 0,0 182,200" stroke="#F97316" stroke-width="1"   fill="none" opacity="0.45"/>
+
+              <!-- ── SHOULDER JOINTS ── -->
+              <circle cx="72"  cy="142" r="26" fill="#08111C" stroke="#1A6478" stroke-width="1.8"/>
+              <circle cx="72"  cy="142" r="17" fill="url(#metalH)"/>
+              <circle cx="72"  cy="142" r="9"  fill="#0E1E30"/>
+              <circle cx="68"  cy="138" r="4.5" fill="#264860" opacity="0.75"/>
+              <circle cx="248" cy="142" r="26" fill="#08111C" stroke="#1A6478" stroke-width="1.8"/>
+              <circle cx="248" cy="142" r="17" fill="url(#metalH)"/>
+              <circle cx="248" cy="142" r="9"  fill="#0E1E30"/>
+              <circle cx="252" cy="138" r="4.5" fill="#264860" opacity="0.75"/>
+
+              <g id="andArmLeft">
+              <!-- ── LEFT ARM ── -->
+              <path d="M50,152 Q44,168 42,208 Q44,240 48,258 Q58,268 68,266 Q78,264 84,258 Q88,240 86,208 Q84,168 78,152 Q65,142 50,152Z" fill="url(#metalArm)"/>
+              <line x1="48"  y1="168" x2="84" y2="168" stroke="#1A6478" stroke-width="1"   opacity="0.45"/>
+              <line x1="45"  y1="190" x2="84" y2="190" stroke="#1A6478" stroke-width="1"   opacity="0.38"/>
+              <line x1="44"  y1="216" x2="85" y2="216" stroke="#1A6478" stroke-width="0.8" opacity="0.32"/>
+              <line x1="45"  y1="242" x2="84" y2="242" stroke="#1A6478" stroke-width="0.8" opacity="0.28"/>
+              <!-- Left elbow -->
+              <circle cx="65" cy="264" r="18" fill="#08111C" stroke="#1A6478" stroke-width="1.8"/>
+              <circle cx="65" cy="264" r="10" fill="#0E1E30"/>
+              <circle cx="65" cy="264" r="4.5" fill="#1A6478" opacity="0.8" class="and-knee-glow"/>
+              <!-- Left forearm -->
+              <path d="M48,276 Q44,298 46,338 Q50,360 65,362 Q80,360 82,338 Q84,298 82,276 Q74,266 65,266 Q56,266 48,276Z" fill="url(#metalArm)"/>
+              <rect x="52" y="284" width="26" height="6"  rx="2" fill="#1A6478" opacity="0.3"/>
+              <rect x="52" y="297" width="26" height="4"  rx="2" fill="#1A6478" opacity="0.24"/>
+              <rect x="52" y="311" width="26" height="4"  rx="2" fill="#1A6478" opacity="0.22"/>
+              <rect x="52" y="330" width="26" height="4"  rx="2" fill="#1A6478" opacity="0.2"/>
+              <!-- Left wrist -->
+              <rect x="50" y="358" width="30" height="12" rx="4" fill="#08111C" stroke="#1A6478" stroke-width="1.2"/>
+              <!-- Left hand -->
+              <path d="M46,370 Q50,386 54,404 Q58,416 65,416 Q72,416 76,404 Q80,386 84,370 Q74,362 65,362 Q56,362 46,370Z" fill="#08111C"/>
+              <path d="M50,370 Q54,384 58,400 Q61,410 65,410 Q69,410 72,400 Q76,384 80,370" fill="#0E1E30" opacity="0.7"/>
+              <rect x="48" y="405" width="8"  height="22" rx="4" fill="url(#metalArm)" transform="rotate(-10,52,415)"/>
+              <rect x="58" y="405" width="8"  height="26" rx="4" fill="url(#metalArm)"/>
+              <rect x="68" y="405" width="8"  height="24" rx="4" fill="url(#metalArm)" transform="rotate(10,72,415)"/>
+              <rect x="33" y="388" width="7"  height="18" rx="3" fill="url(#metalArm)" transform="rotate(-28,37,394)"/>
+              <!-- Left hand energy orb -->
+              <circle cx="65" cy="395" r="16" fill="url(#ambOrange)" filter="url(#fg2)" opacity="0.8" class="and-hand-orb"/>
+              <circle cx="65" cy="395" r="6" fill="#FFE8B0" opacity="0.9" class="and-hand-orb-core"/>
+              </g>
+
+              <g id="andArmRight">
+              <!-- ── RIGHT ARM ── -->
+              <path d="M242,152 Q236,168 234,208 Q236,240 236,258 Q242,268 252,266 Q262,264 268,258 Q272,240 274,208 Q276,168 270,152 Q256,142 242,152Z" fill="url(#metalArm)"/>
+              <line x1="236" y1="168" x2="272" y2="168" stroke="#1A6478" stroke-width="1"   opacity="0.45"/>
+              <line x1="235" y1="190" x2="274" y2="190" stroke="#1A6478" stroke-width="1"   opacity="0.38"/>
+              <line x1="235" y1="216" x2="275" y2="216" stroke="#1A6478" stroke-width="0.8" opacity="0.32"/>
+              <line x1="235" y1="242" x2="274" y2="242" stroke="#1A6478" stroke-width="0.8" opacity="0.28"/>
+              <!-- Right elbow -->
+              <circle cx="255" cy="264" r="18" fill="#08111C" stroke="#1A6478" stroke-width="1.8"/>
+              <circle cx="255" cy="264" r="10" fill="#0E1E30"/>
+              <circle cx="255" cy="264" r="4.5" fill="#1A6478" opacity="0.8" class="and-knee-glow"/>
+              <!-- Right forearm -->
+              <path d="M238,276 Q236,298 238,338 Q240,360 255,362 Q270,360 274,338 Q276,298 272,276 Q264,266 255,266 Q246,266 238,276Z" fill="url(#metalArm)"/>
+              <rect x="242" y="284" width="26" height="6"  rx="2" fill="#1A6478" opacity="0.3"/>
+              <rect x="242" y="297" width="26" height="4"  rx="2" fill="#1A6478" opacity="0.24"/>
+              <rect x="242" y="311" width="26" height="4"  rx="2" fill="#1A6478" opacity="0.22"/>
+              <rect x="242" y="330" width="26" height="4"  rx="2" fill="#1A6478" opacity="0.2"/>
+              <!-- Right wrist -->
+              <rect x="240" y="358" width="30" height="12" rx="4" fill="#08111C" stroke="#1A6478" stroke-width="1.2"/>
+              <!-- Right hand -->
+              <path d="M236,370 Q240,386 244,404 Q248,416 255,416 Q262,416 266,404 Q270,386 274,370 Q264,362 255,362 Q246,362 236,370Z" fill="#08111C"/>
+              <path d="M240,370 Q244,384 248,400 Q251,410 255,410 Q259,410 262,400 Q266,384 270,370" fill="#0E1E30" opacity="0.7"/>
+              <rect x="244" y="405" width="8"  height="22" rx="4" fill="url(#metalArm)" transform="rotate(10,248,415)"/>
+              <rect x="254" y="405" width="8"  height="26" rx="4" fill="url(#metalArm)"/>
+              <rect x="264" y="405" width="8"  height="24" rx="4" fill="url(#metalArm)" transform="rotate(-10,268,415)"/>
+              <rect x="280" y="388" width="7"  height="18" rx="3" fill="url(#metalArm)" transform="rotate(28,284,394)"/>
+              <!-- Right hand energy orb -->
+              <circle cx="255" cy="395" r="16" fill="url(#ambOrange)" filter="url(#fg2)" opacity="0.8" class="and-hand-orb"/>
+              <circle cx="255" cy="395" r="6" fill="#FFE8B0" opacity="0.9" class="and-hand-orb-core"/>
+              </g>
+
+              <!-- ── NECK ── -->
+              <path d="M146,100 L146,132 Q152,136 160,136 Q168,136 174,132 L174,100 Q168,96 160,96 Q152,96 146,100Z" fill="url(#metalV)"/>
+              <rect x="144" y="107" width="32" height="4" rx="2" fill="#1A6478" opacity="0.5"/>
+              <rect x="144" y="115" width="32" height="4" rx="2" fill="#1A6478" opacity="0.4"/>
+              <rect x="144" y="123" width="32" height="4" rx="2" fill="#1A6478" opacity="0.3"/>
+
+              <!-- ── HEAD ── -->
+              <!-- Head ambient glow -->
+              <ellipse cx="160" cy="58" rx="68" ry="52" fill="url(#ambTeal)" filter="url(#fg1)" opacity="0.5"/>
+              <!-- Head main shape -->
+              <path d="M108,26 Q106,16 120,12 L160,10 L200,12 Q214,16 212,26 L214,94 Q214,106 200,110 L160,112 L120,110 Q106,106 108,94Z" fill="url(#metalV)"/>
+              <!-- Head side plates -->
+              <path d="M108,38 Q98,44 96,62 Q98,80 108,86 L114,86 L114,38Z" fill="#06101A"/>
+              <path d="M212,38 Q222,44 224,62 Q222,80 212,86 L206,86 L206,38Z" fill="#06101A"/>
+              <!-- Side detail lines -->
+              <line x1="98"  y1="50"  x2="112" y2="48"  stroke="#1A6478" stroke-width="1" opacity="0.6"/>
+              <line x1="97"  y1="62"  x2="112" y2="62"  stroke="#1A6478" stroke-width="1" opacity="0.5"/>
+              <line x1="98"  y1="74"  x2="112" y2="76"  stroke="#1A6478" stroke-width="1" opacity="0.4"/>
+              <line x1="222" y1="50"  x2="208" y2="48"  stroke="#1A6478" stroke-width="1" opacity="0.6"/>
+              <line x1="223" y1="62"  x2="208" y2="62"  stroke="#1A6478" stroke-width="1" opacity="0.5"/>
+              <line x1="222" y1="74"  x2="208" y2="76"  stroke="#1A6478" stroke-width="1" opacity="0.4"/>
+              <!-- Brow plate -->
+              <rect x="116" y="40" width="88" height="14" rx="3" fill="#060F18"/>
+              <rect x="118" y="41" width="84" height="6"  rx="2" fill="#0E2030" opacity="0.8"/>
+              <!-- Cheekbone details -->
+              <path d="M112,75 L120,72 L120,88 L112,90Z" fill="#0A1828" opacity="0.7"/>
+              <path d="M208,75 L200,72 L200,88 L208,90Z" fill="#0A1828" opacity="0.7"/>
+
+              <!-- VISOR glow layer -->
+              <rect x="110" y="54" width="100" height="22" rx="5" fill="#F97316" filter="url(#fg1)" opacity="0.55" class="and-visor-glow"/>
+              <!-- Visor body -->
+              <rect x="114" y="54" width="92" height="20" rx="4" fill="#0E0800"/>
+              <!-- Visor inner light -->
+              <rect x="116" y="56" width="88" height="16" rx="3" fill="url(#visorGlow)" opacity="0.95" class="and-visor-inner"/>
+              <!-- Visor top reflection -->
+              <rect x="118" y="57" width="84" height="4"  rx="2" fill="rgba(255,220,160,0.28)"/>
+              <!-- Eye pupils within visor -->
+              <circle cx="144" cy="64" r="6"   fill="rgba(255,190,80,0.85)"/>
+              <circle cx="176" cy="64" r="6"   fill="rgba(255,190,80,0.85)"/>
+              <circle cx="144" cy="64" r="3"   fill="#FFF5D0"/>
+              <circle cx="176" cy="64" r="3"   fill="#FFF5D0"/>
+              <circle cx="145.5" cy="62.5" r="1.2" fill="rgba(255,255,255,0.7)"/>
+              <circle cx="177.5" cy="62.5" r="1.2" fill="rgba(255,255,255,0.7)"/>
+              <!-- Visor moving scan highlight -->
+              <rect x="116" y="56" width="14" height="16" rx="3" fill="rgba(255,210,120,0.55)" class="and-eye-scan"/>
+
+              <!-- Jaw / chin -->
+              <path d="M116,78 L116,102 Q136,114 160,116 Q184,114 204,102 L204,78Z" fill="#101E2E"/>
+              <path d="M120,84 L120,100 Q140,110 160,111 Q180,110 200,100 L200,84Z" fill="#0A1622"/>
+              <line x1="126" y1="88"  x2="194" y2="88"  stroke="#1A6478" stroke-width="1"   opacity="0.38"/>
+              <line x1="128" y1="96"  x2="192" y2="96"  stroke="#1A6478" stroke-width="0.8" opacity="0.28"/>
+              <!-- Chin center -->
+              <path d="M150,102 Q160,112 170,102 L167,110 Q160,116 153,110Z" fill="#080F18" opacity="0.8"/>
+
+              <!-- Head top sensors -->
+              <rect x="142" y="10" width="36" height="7" rx="3.5" fill="#060F18" stroke="#1A6478" stroke-width="1"/>
+              <circle cx="151" cy="13.5" r="2.5" fill="#1A6478" opacity="0.8"/>
+              <circle cx="160" cy="13.5" r="2.5" fill="#F97316" class="and-sensor"/>
+              <circle cx="169" cy="13.5" r="2.5" fill="#1A6478" opacity="0.8"/>
+
+              <!-- ── CIRCUIT LINES (torso) ── -->
+              <path d="M116,158 L92,158 L88,180 L96,192" stroke="#1A6478" stroke-width="1.1" fill="none" opacity="0.45"/>
+              <path d="M116,180 L102,184 L96,202 L88,206" stroke="#1A6478" stroke-width="1"   fill="none" opacity="0.38"/>
+              <path d="M204,158 L228,158 L232,180 L224,192" stroke="#1A6478" stroke-width="1.1" fill="none" opacity="0.45"/>
+              <path d="M204,180 L218,184 L224,202 L232,206" stroke="#1A6478" stroke-width="1"   fill="none" opacity="0.38"/>
+              <circle cx="88"  cy="180" r="3"   fill="#1A6478" opacity="0.7"/>
+              <circle cx="96"  cy="192" r="2.5" fill="#F97316" opacity="0.65"/>
+              <circle cx="232" cy="180" r="3"   fill="#1A6478" opacity="0.7"/>
+              <circle cx="224" cy="192" r="2.5" fill="#F97316" opacity="0.65"/>
+
+              <!-- ── SPECULAR HIGHLIGHTS ── -->
+              <path d="M128,13 Q160,9 192,13 L188,18 Q160,14 132,18Z" fill="rgba(160,210,240,0.1)"/>
+              <path d="M120,138 L157,132 L157,152 Q138,158 122,150Z" fill="rgba(100,180,220,0.08)"/>
+              <path d="M54,155 L74,150 L75,174 Q64,176 52,170Z" fill="rgba(100,180,220,0.09)"/>
+              <path d="M246,155 L266,150 L268,174 Q256,176 244,170Z" fill="rgba(100,180,220,0.09)"/>
+            </svg>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ EXPERTOS ══════════════ -->
+  <section class="s-expertos">
+    <div class="container">
+      <div class="expertos-grid">
+
+        <!-- IMAGE COL -->
+        <div class="exp-left reveal-right">
+          <div class="tech-img-frame">
+            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=900&q=85&auto=format&fit=crop" alt="Tech Team FlowsLabs" loading="lazy">
+            <div class="scan-line"></div>
+            <div class="corner tl"></div><div class="corner tr"></div>
+            <div class="corner bl"></div><div class="corner br"></div>
+            <div class="tech-img-overlay">
+              <div class="tio-badge">
+                <span class="tio-num orange">+40</span>
+                <span class="tio-lbl">Proyectos<br>entregados</span>
+              </div>
+              <div class="tio-badge">
+                <span class="tio-num">98%</span>
+                <span class="tio-lbl">Clientes<br>satisfechos</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TEXT COL -->
+        <div class="exp-right reveal-left">
+          <span class="exp-eyebrow">NUESTRO EQUIPO</span>
+          <h2 class="exp-title">
+            EXPERTOS EN<br>
+            <span class="orange">SOLUCIONES</span><br>
+            DIGITALES &amp;<br>
+            <span class="exp-mark">AUTOMATIZACIÓN</span>
+          </h2>
+          <div class="exp-sep"></div>
+          <p>Ayudamos a empresas a optimizar sus procesos mediante soluciones basadas en inteligencia artificial, reduciendo tiempos y mejorando la eficiencia operativa.</p>
+          <p>Trabajamos de forma cercana con cada cliente para desarrollar herramientas adaptadas a sus necesidades y enfocadas en resultados reales.</p>
+          <div class="exp-tags">
+            <span>Inteligencia Artificial</span>
+            <span>Automatización</span>
+            <span>Análisis de Datos</span>
+            <span>Marketing Digital</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ MÉTRICAS ══════════════ -->
+  <section class="s-metrics">
+    <canvas id="matrixCanvas" aria-hidden="true"></canvas>
+    <div class="container">
+      <p class="metrics-cap reveal-up">Resultados que pueden lograrse mediante <strong>automatización inteligente</strong></p>
+      <div class="metrics-wrap reveal-up" data-delay="0.1">
+        <div class="metric-item">
+          <span class="mn orange">30–50%</span>
+          <span class="ml">MÁS RÁPIDO QUE<br>PROCESOS MANUALES</span>
+        </div>
+        <div class="ms"></div>
+        <div class="metric-item">
+          <span class="mn orange">24/7</span>
+          <span class="ml">AUTOMATIZACIÓN Y<br>OPERACIÓN CONTINUA</span>
+        </div>
+        <div class="ms"></div>
+        <div class="metric-item">
+          <span class="mn orange">2–3x</span>
+          <span class="ml">MAYOR EFICIENCIA<br>EN PROCESOS</span>
+        </div>
+      </div>
+      <div class="metrics-dec reveal-up" data-delay="0.2">
+        <div class="star teal-star">✦</div>
+        <div class="dl orange-dl"></div>
+        <div class="dl teal-dl"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ LISTA DE SERVICIOS ══════════════ -->
+  <section id="servicios" class="s-services">
+
+    <div class="container svc-intro">
+      <div class="svc-intro-l reveal-right">
+        <h2 class="dh2 orange">LISTA DE<br>SERVICIOS</h2>
+        <div class="svc-ul"></div>
+      </div>
+      <div class="svc-intro-r reveal-left">
+        <p>En FlowsLabs ayudamos a las empresas a crecer mediante soluciones tecnológicas que automatizan procesos, optimizan campañas y convierten los datos en decisiones inteligentes.</p>
+        <p>Integramos múltiples plataformas, aplicamos inteligencia artificial y desarrollamos sistemas que mejoran la eficiencia operativa y el rendimiento digital.</p>
+      </div>
+    </div>
+
+    <!-- Services Grid — expandable cards -->
+    <div class="container">
+      <div class="services-grid">
+
+        <div class="svc-item reveal-up" data-delay="0">
+          <canvas class="svc-viz" data-viz="agents" aria-hidden="true"></canvas>
+          <div class="svc-item-head">
+            <span class="svc-num">01</span>
+            <div class="svc-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm0 0v10m0 0l4-4m-4 4l-4-4"/></svg>
+            </div>
+          </div>
+          <h3>Agentes de IA</h3>
+          <p class="svc-sub">VOZ Y CHAT</p>
+          <ul>
+            <li>Conectados a CRM y base de datos interna</li>
+            <li>Entrenados con datos históricos de tu empresa</li>
+            <li>Scoring automático de leads en tiempo real</li>
+          </ul>
+          <button class="svc-toggle" aria-expanded="false">Ver más <span class="svc-toggle-icon">+</span></button>
+          <div class="svc-expand">
+            <p>Desplegamos asistentes virtuales de voz y chat integrados a tus plataformas: WhatsApp, web, call center o CRM. Aprenden de tus conversaciones reales y mejoran con el tiempo.</p>
+            <ul>
+              <li>Integración con WhatsApp Business, web y teléfono</li>
+              <li>Reportes de conversación y análisis de sentimiento</li>
+              <li>Disponibilidad 24/7 sin costo de personal adicional</li>
+              <li>Escalamiento automático a agente humano cuando se requiere</li>
+            </ul>
+            <a href="#contacto" class="svc-expand-cta">Solicitar Agente de IA →</a>
+          </div>
+        </div>
+
+        <div class="svc-item reveal-up" data-delay="0.07">
+          <canvas class="svc-viz" data-viz="social" aria-hidden="true"></canvas>
+          <div class="svc-item-head">
+            <span class="svc-num">02</span>
+            <div class="svc-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+          </div>
+          <h3>Manejo de Redes Sociales</h3>
+          <p class="svc-sub">SOCIAL MEDIA IA</p>
+          <ul>
+            <li>Copies generados por IA entrenada en tu marca</li>
+            <li>Calendarios editoriales por tendencias</li>
+            <li>Optimización continua por engagement</li>
+          </ul>
+          <button class="svc-toggle" aria-expanded="false">Ver más <span class="svc-toggle-icon">+</span></button>
+          <div class="svc-expand">
+            <p>Gestionamos tus redes de forma estratégica e inteligente. La IA aprende el tono, la voz y los valores de tu marca para producir contenido auténtico que conecta con tu audiencia.</p>
+            <ul>
+              <li>Gestión de Instagram, TikTok, LinkedIn y X</li>
+              <li>Diseño de piezas gráficas y videos cortos</li>
+              <li>Reportes semanales de rendimiento y crecimiento</li>
+              <li>Community management incluido</li>
+            </ul>
+            <a href="#contacto" class="svc-expand-cta">Solicitar Gestión de Redes →</a>
+          </div>
+        </div>
+
+        <div class="svc-item reveal-up" data-delay="0.14">
+          <canvas class="svc-viz" data-viz="intel" aria-hidden="true"></canvas>
+          <div class="svc-item-head">
+            <span class="svc-num">03</span>
+            <div class="svc-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </div>
+          </div>
+          <h3>Medición de Competidores</h3>
+          <p class="svc-sub">COMPETITIVE INTEL</p>
+          <ul>
+            <li>Scraping automatizado de competidores</li>
+            <li>Seguimiento de pauta y creatividades</li>
+            <li>Benchmarking por categoría de mercado</li>
+          </ul>
+          <button class="svc-toggle" aria-expanded="false">Ver más <span class="svc-toggle-icon">+</span></button>
+          <div class="svc-expand">
+            <p>Monitoreo continuo de tus competidores en tiempo real. Sabrás qué están publicando, qué están pautando, qué precios manejan y cómo responde su audiencia antes de que tú actúes.</p>
+            <ul>
+              <li>Alertas automáticas de cambios en precios y estrategias</li>
+              <li>Análisis de inversión publicitaria estimada de competidores</li>
+              <li>Informes semanales de inteligencia competitiva</li>
+              <li>Panel comparativo de share of voice</li>
+            </ul>
+            <a href="#contacto" class="svc-expand-cta">Solicitar Inteligencia Competitiva →</a>
+          </div>
+        </div>
+
+        <div class="svc-item reveal-up" data-delay="0">
+          <canvas class="svc-viz" data-viz="wave" aria-hidden="true"></canvas>
+          <div class="svc-item-head">
+            <span class="svc-num">04</span>
+            <div class="svc-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+          </div>
+          <h3>Social Listening</h3>
+          <p class="svc-sub">PLATAFORMA NLP</p>
+          <ul>
+            <li>Scraping + APIs de redes sociales</li>
+            <li>Análisis semántico con procesamiento de lenguaje natural</li>
+            <li>Detección temprana de crisis y tendencias</li>
+          </ul>
+          <button class="svc-toggle" aria-expanded="false">Ver más <span class="svc-toggle-icon">+</span></button>
+          <div class="svc-expand">
+            <p>Escucha todo lo que se dice de tu marca en redes, foros y medios digitales. Detectamos oportunidades y amenazas antes de que se conviertan en un problema o una tendencia perdida.</p>
+            <ul>
+              <li>Monitoreo de menciones en redes, foros y noticias</li>
+              <li>Dashboard de sentimiento de marca en tiempo real</li>
+              <li>Alertas configurables por palabra clave o territorio</li>
+              <li>Reportes de percepción de marca mensual</li>
+            </ul>
+            <a href="#contacto" class="svc-expand-cta">Solicitar Social Listening →</a>
+          </div>
+        </div>
+
+        <div class="svc-item svc-featured reveal-up" data-delay="0.07">
+          <canvas class="svc-viz" data-viz="cluster" aria-hidden="true"></canvas>
+          <div class="svc-item-head">
+            <span class="svc-num">05</span>
+            <div class="svc-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            </div>
+          </div>
+          <h3>Audiencias Inteligentes</h3>
+          <p class="svc-sub">MACHINE LEARNING</p>
+          <ul>
+            <li>Agrupación automática por comportamiento real</li>
+            <li>Audiencias similares por valor de cliente (LTV)</li>
+            <li>Segmentación dinámica en tiempo real</li>
+          </ul>
+          <button class="svc-toggle" aria-expanded="false">Ver más <span class="svc-toggle-icon">+</span></button>
+          <div class="svc-expand">
+            <p>Construimos audiencias de alto rendimiento basadas en modelos de machine learning que analizan el comportamiento real de tus clientes, no suposiciones demográficas.</p>
+            <ul>
+              <li>Predicción de probabilidad de compra y abandono</li>
+              <li>Activación directa en Meta, Google y TikTok Ads</li>
+              <li>Actualización automática semanal de segmentos</li>
+              <li>Modelos de retención y reactivación de clientes</li>
+            </ul>
+            <a href="#contacto" class="svc-expand-cta">Solicitar Audiencias Inteligentes →</a>
+          </div>
+        </div>
+
+        <div class="svc-item reveal-up" data-delay="0.14">
+          <canvas class="svc-viz" data-viz="dashboard" aria-hidden="true"></canvas>
+          <div class="svc-item-head">
+            <span class="svc-num">06</span>
+            <div class="svc-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            </div>
+          </div>
+          <h3>Control Unificado</h3>
+          <p class="svc-sub">DASHBOARDS IA</p>
+          <ul>
+            <li>Todas las fuentes de datos integradas</li>
+            <li>Recomendaciones accionables por IA</li>
+            <li>Proyecciones y atribución basada en datos</li>
+          </ul>
+          <button class="svc-toggle" aria-expanded="false">Ver más <span class="svc-toggle-icon">+</span></button>
+          <div class="svc-expand">
+            <p>Un solo dashboard centraliza Google Analytics, Meta Ads, TikTok, CRM y más. La IA analiza todo y te entrega recomendaciones concretas cada semana para mejorar resultados.</p>
+            <ul>
+              <li>Conexión con +20 fuentes de datos en tiempo real</li>
+              <li>Alertas automáticas por métricas fuera de rango</li>
+              <li>Informes ejecutivos automatizados para dirección</li>
+              <li>Modelado de escenarios y proyecciones de negocio</li>
+            </ul>
+            <a href="#contacto" class="svc-expand-cta">Solicitar Dashboard Unificado →</a>
+          </div>
+        </div>
+
+        <div class="svc-item reveal-up" data-delay="0">
+          <canvas class="svc-viz" data-viz="gauge" aria-hidden="true"></canvas>
+          <div class="svc-item-head">
+            <span class="svc-num">07</span>
+            <div class="svc-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            </div>
+          </div>
+          <h3>Calculadora de Influencers</h3>
+          <p class="svc-sub">INFLUENCER ANALYTICS</p>
+          <ul>
+            <li>Puntuación predictiva de retorno sobre inversión</li>
+            <li>Historial de conversiones por influencer</li>
+            <li>Priorización automática por objetivos</li>
+          </ul>
+          <button class="svc-toggle" aria-expanded="false">Ver más <span class="svc-toggle-icon">+</span></button>
+          <div class="svc-expand">
+            <p>Antes de contratar un influencer, calcula con precisión su impacto real. Nuestro modelo analiza audiencia, engagement auténtico, historial de conversiones y compatibilidad con tu marca.</p>
+            <ul>
+              <li>Score de compatibilidad con tu categoría y valores de marca</li>
+              <li>Proyección de resultados estimados antes de contratar</li>
+              <li>Seguimiento de ROI y conversiones post-campaña</li>
+              <li>Base de datos de influencers verificados en Colombia</li>
+            </ul>
+            <a href="#contacto" class="svc-expand-cta">Solicitar Análisis de Influencers →</a>
+          </div>
+        </div>
+
+        <div class="svc-item reveal-up" data-delay="0.07">
+          <canvas class="svc-viz" data-viz="video" aria-hidden="true"></canvas>
+          <div class="svc-item-head">
+            <span class="svc-num">08</span>
+            <div class="svc-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+            </div>
+          </div>
+          <h3>Videos y Doblaje con IA</h3>
+          <p class="svc-sub">VIDEO AUTOMATION</p>
+          <ul>
+            <li>Producción automatizada por segmento de audiencia</li>
+            <li>Personalización uno a uno a escala</li>
+            <li>Pruebas A/B de variantes de video</li>
+          </ul>
+          <button class="svc-toggle" aria-expanded="false">Ver más <span class="svc-toggle-icon">+</span></button>
+          <div class="svc-expand">
+            <p>Producimos cientos de videos personalizados de forma automatizada. Cada versión está adaptada al segmento, canal y momento del cliente, maximizando relevancia y conversión.</p>
+            <ul>
+              <li>Doblaje automático a múltiples idiomas y dialectos</li>
+              <li>Sincronización labial con IA para calidad profesional</li>
+              <li>Integración con campañas de Meta, YouTube y TikTok</li>
+              <li>Análisis de rendimiento por variante de video</li>
+            </ul>
+            <a href="#contacto" class="svc-expand-cta">Solicitar Videos con IA →</a>
+          </div>
+        </div>
+
+        <div class="svc-item svc-featured-teal reveal-up" data-delay="0.14">
+          <canvas class="svc-viz" data-viz="funnel" aria-hidden="true"></canvas>
+          <div class="svc-item-head">
+            <span class="svc-num">09</span>
+            <div class="svc-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+            </div>
+          </div>
+          <h3>Pauta Digital Inteligente</h3>
+          <p class="svc-sub">MEDIA BUYING IA</p>
+          <ul>
+            <li>Asignación inteligente de presupuesto por canal</li>
+            <li>Modelos de incrementalidad y atribución</li>
+            <li>Optimización multicanal continua</li>
+          </ul>
+          <button class="svc-toggle" aria-expanded="false">Ver más <span class="svc-toggle-icon">+</span></button>
+          <div class="svc-expand">
+            <p>Gestionamos tu inversión publicitaria en Google, Meta, TikTok y más, usando algoritmos de IA que maximizan el retorno y redistribuyen el presupuesto en tiempo real según el rendimiento.</p>
+            <ul>
+              <li>Gestión completa de campañas en todas las plataformas</li>
+              <li>Reducción del costo por adquisición mediante IA</li>
+              <li>Reportes de atribución multicanal claros y precisos</li>
+              <li>Estrategia de creatividades por etapa del embudo</li>
+            </ul>
+            <a href="#contacto" class="svc-expand-cta">Solicitar Pauta Inteligente →</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ══════════════ CLIENTES ══════════════ -->
+  <section class="s-clients">
+    <div class="container">
+      <div class="clients-head reveal-up">
+        <span class="clients-eyebrow">CLIENTES</span>
+        <h2 class="dh2">MARCAS QUE <span class="orange">CONFÍAN EN NOSOTROS</span></h2>
+        <p class="clients-sub">Empresas líderes que transforman sus procesos con nuestra tecnología</p>
+      </div>
+    </div>
+
+    <!-- Logo grid — showcase de clientes -->
+    <div class="container clients-grid-wrap">
+      <div class="clients-logo-grid">
+
+        <div class="cli-logo-item reveal-up" data-delay="0">
+          <div class="cli-img-wrap">
+            <img src="LOGOS/clients/aviatur.png" alt="Aviatur">
+          </div>
+          <span>AVIATUR</span>
+        </div>
+
+        <div class="cli-logo-item reveal-up" data-delay="0.06">
+          <div class="cli-img-wrap">
+            <img src="LOGOS/clients/ccb.png" alt="Cámara de Comercio de Bogotá">
+          </div>
+          <span>CÁMARA DE COMERCIO</span>
+        </div>
+
+        <div class="cli-logo-item reveal-up" data-delay="0.12">
+          <div class="cli-img-wrap">
+            <img src="LOGOS/clients/etb.png" alt="ETB">
+          </div>
+          <span>ETB</span>
+        </div>
+
+        <div class="cli-logo-item reveal-up" data-delay="0.18">
+          <div class="cli-img-wrap">
+            <img src="LOGOS/clients/d1.png" alt="Tiendas D1">
+          </div>
+          <span>TIENDAS D1</span>
+        </div>
+
+        <div class="cli-logo-item reveal-up" data-delay="0.24">
+          <div class="cli-img-wrap">
+            <img src="LOGOS/clients/jgb.png" alt="JGB">
+          </div>
+          <span>JGB</span>
+        </div>
+
+        <div class="cli-logo-item reveal-up" data-delay="0.30">
+          <div class="cli-img-wrap">
+            <img src="LOGOS/clients/fenavi.png" alt="Fenavi">
+          </div>
+          <span>FENAVI</span>
+        </div>
+
+        <div class="cli-logo-item reveal-up" data-delay="0.36">
+          <div class="cli-img-wrap">
+            <img src="LOGOS/clients/zelva.png" alt="Zelva">
+          </div>
+          <span>ZELVA</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Infinite marquee -->
+    <div class="marquee-outer">
+      <div class="marquee-track" id="marqueeTrack">
+        <span class="marquee-item">AVIATUR</span><span class="marquee-sep">✦</span>
+        <span class="marquee-item">CÁMARA DE COMERCIO</span><span class="marquee-sep">✦</span>
+        <span class="marquee-item">ETB</span><span class="marquee-sep">✦</span>
+        <span class="marquee-item">TIENDAS D1</span><span class="marquee-sep">✦</span>
+        <span class="marquee-item">JGB</span><span class="marquee-sep">✦</span>
+        <span class="marquee-item">FENAVI</span><span class="marquee-sep">✦</span>
+        <span class="marquee-item">ZELVA</span><span class="marquee-sep">✦</span>
+        <span class="marquee-item">AVIATUR</span><span class="marquee-sep">✦</span>
+        <span class="marquee-item">CÁMARA DE COMERCIO</span><span class="marquee-sep">✦</span>
+        <span class="marquee-item">ETB</span><span class="marquee-sep">✦</span>
+        <span class="marquee-item">TIENDAS D1</span><span class="marquee-sep">✦</span>
+        <span class="marquee-item">JGB</span><span class="marquee-sep">✦</span>
+        <span class="marquee-item">FENAVI</span><span class="marquee-sep">✦</span>
+        <span class="marquee-item">ZELVA</span><span class="marquee-sep">✦</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ CONTACTO ══════════════ -->
+  <section id="contacto" class="s-contact">
+    <canvas id="contactCanvas" aria-hidden="true"></canvas>
+    <div class="container contact-grid">
+
+      <div class="contact-l reveal-right">
+        <span class="contact-eyebrow">CONTACTO</span>
+        <h2 class="dh2">HABLEMOS<br>DE TU <span class="orange">PROYECTO</span></h2>
+        <p>¿Listo para transformar tu empresa con inteligencia artificial? Diseñamos la solución perfecta para tu negocio.</p>
+        <div class="contact-details">
+          <div class="cd-item"><span>Ubicación</span><strong>Bogotá D.C, Colombia</strong></div>
+          <div class="cd-item"><span>Teléfono</span><strong>+57 318 987 0423</strong></div>
+          <div class="cd-item"><span>Correo</span><strong><a href="mailto:flowslabssas@outlook.com">flowslabssas@outlook.com</a></strong></div>
+          <div class="cd-item"><span>Redes</span>
+            <div class="cd-social">
+              <a href="https://www.instagram.com/flowslabssas" target="_blank" rel="noopener" class="cd-social-link" aria-label="Instagram">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
+                <span>@flowslabssas</span>
+              </a>
+              <a href="https://www.tiktok.com/@flows.labs.sas" target="_blank" rel="noopener" class="cd-social-link" aria-label="TikTok">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg>
+                <span>@flows.labs.sas</span>
+              </a>
+              <a href="https://www.linkedin.com/company/flowslabssas" target="_blank" rel="noopener" class="cd-social-link" aria-label="LinkedIn">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                <span>FlowsLabs</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-r reveal-left">
+        <form class="glass-form" id="contactForm" action="https://formsubmit.co/flowslabssas@outlook.com" method="POST">
+          <input type="hidden" name="_subject" value="Nuevo contacto — FlowsLabs">
+          <input type="hidden" name="_captcha" value="false">
+          <div class="ff"><label>Nombre</label><input type="text" name="nombre" required placeholder="Tu nombre"></div>
+          <div class="ff"><label>Correo</label><input type="email" name="email" required placeholder="tu@empresa.com"></div>
+          <div class="ff"><label>Empresa</label><input type="text" name="empresa" placeholder="Nombre de tu empresa"></div>
+          <div class="ff"><label>Mensaje</label><textarea name="mensaje" rows="4" required placeholder="Cuéntanos sobre tu proyecto..."></textarea></div>
+          <button type="submit" class="btn-submit magnetic">
+            <span>Enviar mensaje</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════ FOOTER ══════════════ -->
+  <footer class="footer">
+    <div class="footer-gradient">
+      <div class="fg-rings fg-left" aria-hidden="true">
+        <div class="fgr r1"></div><div class="fgr r2"></div>
+        <div class="fgr-cross fgv"></div><div class="fgr-cross fgh"></div>
+      </div>
+      <div class="fg-stars" aria-hidden="true">
+        <span class="fgs s1 orange-star">✦</span>
+        <span class="fgs s2 teal-star">✦</span>
+        <span class="fgs s3 orange-star">✸</span>
+        <span class="fgs s4 teal-star">✸</span>
+      </div>
+      <div class="fg-rings fg-right" aria-hidden="true">
+        <div class="fgr r1"></div><div class="fgr r2"></div>
+        <div class="fgr-cross fgv"></div><div class="fgr-cross fgh"></div>
+      </div>
+      <blockquote class="footer-quote reveal-up">
+        Diseñamos soluciones <em>inteligentes</em> para un mundo digital en constante <strong>evolución.</strong>
+      </blockquote>
+    </div>
+    <div class="footer-info">
+      <div class="fi-brand">
+        <img src="LOGOS/LOGO COMPLETO 2.png" alt="FlowsLabs" class="fi-logo">
+        <p class="fi-desc">IA, Automatización &amp; Marketing Digital · Bogotá, Colombia</p>
+
+        <!-- Social links -->
+        <div class="fi-social-row">
+
+          <a href="https://www.instagram.com/flowslabssas" target="_blank" rel="noopener" class="fi-soc fi-soc--ig" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="22" height="22"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
+            <span class="fi-soc-label">Instagram</span>
+            <span class="fi-soc-handle">@flowslabssas</span>
+          </a>
+
+          <a href="https://www.tiktok.com/@flows.labs.sas" target="_blank" rel="noopener" class="fi-soc fi-soc--tt" aria-label="TikTok">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg>
+            <span class="fi-soc-label">TikTok</span>
+            <span class="fi-soc-handle">@flows.labs.sas</span>
+          </a>
+
+          <a href="https://www.linkedin.com/company/flowslabssas" target="_blank" rel="noopener" class="fi-soc fi-soc--li" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            <span class="fi-soc-label">LinkedIn</span>
+            <span class="fi-soc-handle">FlowsLabs</span>
+          </a>
+
+          <a href="mailto:flowslabssas@outlook.com" class="fi-soc fi-soc--em" aria-label="Email">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="22" height="22"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <span class="fi-soc-label">Correo</span>
+          </a>
+
+        </div>
+      </div>
+
+      <nav class="fi-legal" aria-label="Legal">
+        <a href="#">Política de Privacidad</a>
+        <a href="#">Términos y Condiciones</a>
+        <a href="#">Política de Reembolso</a>
+      </nav>
+    </div>
+    <div class="footer-bar">© 2026 FlowsLabs SAS · Bogotá D.C, Colombia · NIT en trámite</div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
