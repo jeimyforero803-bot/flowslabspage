@@ -987,6 +987,7 @@ img { display: block; max-width: 100%; }
   .enfoque-left .dh2 { padding-top: 0.5rem; }
   .svc-intro-l .dh2 { padding-top: 0.5rem; }
   .clients-head .dh2 { padding-top: 0.5rem; }
+  .contact-l .dh2 { padding-top: 0.5rem; }
 }
 @media (max-width: 480px) {
   .clients-logo-grid { grid-template-columns: repeat(2, 1fr); gap: .8rem; }
