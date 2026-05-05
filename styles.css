@@ -320,6 +320,7 @@ img { display: block; max-width: 100%; }
   font-family: var(--display);
   font-size: clamp(2.8rem, 6vw, 7rem);
   font-weight: 900; line-height: .93; letter-spacing: .01em; text-transform: uppercase;
+  overflow-wrap: break-word; word-break: break-word;
 }
 .orange { color: var(--orange); }
 .teal   { color: var(--teal); }
@@ -751,16 +752,17 @@ img { display: block; max-width: 100%; }
 /* White card for logo visibility */
 .cli-img-wrap {
   width: 100%; background: #fff;
-  border-radius: 12px; padding: 2.2rem 2.8rem;
+  border-radius: 12px; padding: 1.2rem 1.8rem;
   display: flex; align-items: center; justify-content: center;
-  min-height: 160px;
-  transition: transform .3s;
+  min-height: 120px; overflow: hidden;
+  transition: box-shadow .3s;
 }
-.cli-logo-item:hover .cli-img-wrap { transform: scale(1.03); }
+.cli-logo-item:hover .cli-img-wrap { box-shadow: 0 8px 32px rgba(0,0,0,.18); }
 .cli-logo-item img {
-  height: 120px; width: auto; max-width: 240px; object-fit: contain;
-  display: block;
+  height: 90px; width: auto; max-width: 200px; object-fit: contain;
+  display: block; transition: transform .35s cubic-bezier(.34,1.56,.64,1);
 }
+.cli-logo-item:hover img { transform: scale(1.14); }
 
 .cli-logo-item span {
   font-family: var(--mono); font-size: .58rem; letter-spacing: .16em;
@@ -962,12 +964,24 @@ img { display: block; max-width: 100%; }
   .fi-social-row { max-width: 100%; }
   .fi-soc-handle { display: none; }
   .clients-logo-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
-  .cli-logo-item img { height: 70px; }
-  .cli-img-wrap { min-height: 100px; padding: 1.4rem 1.6rem; }
-  .exp-title { font-size: clamp(2rem, 8vw, 3.5rem); }
-  .neural-canvas { height: 380px; }
+  .cli-logo-item img { height: 60px; }
+  .cli-img-wrap { min-height: 90px; padding: 1rem 1.2rem; }
+  /* Title sizing — prevent text from overflowing on narrow screens */
+  .dh2 { font-size: clamp(1.6rem, 7.5vw, 3.5rem); line-height: 1; }
+  .exp-title { font-size: clamp(1.8rem, 7.5vw, 3.5rem); line-height: 1; }
+  /* Neural canvas section — match wrap min-height to actual canvas height */
+  .neural-canvas { height: 320px; }
+  .neural-wrap { min-height: 320px; }
+  /* Enfoque section — top padding so heading is never flush against section edge */
+  .s-enfoque { padding-top: 3rem; }
+  /* Heading top spacing to absorb line-height glyph bleed */
+  .enfoque-left .dh2 { padding-top: 0.5rem; }
 }
 @media (max-width: 480px) {
   .clients-logo-grid { grid-template-columns: repeat(2, 1fr); gap: .8rem; }
   .container { padding: 0 1.2rem; }
+  .dh2 { font-size: clamp(1.4rem, 7.5vw, 3rem); line-height: 1.05; }
+  .exp-title { font-size: clamp(1.4rem, 7.5vw, 3rem); line-height: 1.05; }
+  .neural-canvas { height: 260px; }
+  .neural-wrap { min-height: 260px; }
 }
