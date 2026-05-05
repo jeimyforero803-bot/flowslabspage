@@ -963,7 +963,8 @@ img { display: block; max-width: 100%; }
   }
   .nav-links.open a:hover,
   .nav-links.open a.active { color: var(--orange); }
-  .navbar { z-index: 1000; }
+  /* nav-wrap must stack above the menu overlay within the navbar stacking context */
+  .nav-wrap { position: relative; z-index: 999; }
   .orbit-rings { display: none; }
   .hero-main-logo { width: min(340px, 88vw); }
   .metrics-wrap { flex-direction: column; gap: 2.5rem; }
