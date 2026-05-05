@@ -969,19 +969,21 @@ img { display: block; max-width: 100%; }
   /* Title sizing — prevent text from overflowing on narrow screens */
   .dh2 { font-size: clamp(1.6rem, 7.5vw, 3.5rem); line-height: 1; }
   .exp-title { font-size: clamp(1.8rem, 7.5vw, 3.5rem); line-height: 1; }
-  /* Neural canvas section — match wrap min-height to actual canvas height */
-  .neural-canvas { height: 320px; }
-  .neural-wrap { min-height: 320px; }
+  /* Neural canvas — restore closer to original size */
+  .neural-canvas { height: 450px; }
+  .neural-wrap { min-height: 450px; }
   /* Enfoque section — top padding so heading is never flush against section edge */
   .s-enfoque { padding-top: 3rem; }
-  /* Heading top spacing to absorb line-height glyph bleed */
+  /* Heading top spacing to absorb line-height (.93) glyph bleed above line box */
   .enfoque-left .dh2 { padding-top: 0.5rem; }
+  .svc-intro-l .dh2 { padding-top: 0.5rem; }
+  .clients-head .dh2 { padding-top: 0.5rem; }
 }
 @media (max-width: 480px) {
   .clients-logo-grid { grid-template-columns: repeat(2, 1fr); gap: .8rem; }
   .container { padding: 0 1.2rem; }
   .dh2 { font-size: clamp(1.4rem, 7.5vw, 3rem); line-height: 1.05; }
   .exp-title { font-size: clamp(1.4rem, 7.5vw, 3rem); line-height: 1.05; }
-  .neural-canvas { height: 260px; }
-  .neural-wrap { min-height: 260px; }
+  .neural-canvas { height: 380px; }
+  .neural-wrap { min-height: 380px; }
 }
