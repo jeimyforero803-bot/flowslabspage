@@ -1210,6 +1210,80 @@ function initTilt() {
   });
 }
 
+// ── Gooey Text Morphing (hero) ────────────────────────────────────────
+function initGooeyText() {
+  const container = document.getElementById('heroGooey');
+  if (!container) return;
+  const span1 = container.querySelector('.gooey-span-1');
+  const span2 = container.querySelector('.gooey-span-2');
+  if (!span1 || !span2) return;
+
+  const texts = ['Inteligencia Artificial', 'Automatización', 'Marketing Digital', 'Análisis de Datos', 'Predicción'];
+  const morphTime = 1.1, cooldownTime = 0.35;
+
+  let textIndex = texts.length - 1;
+  let time = Date.now(), morph = 0, cooldown = cooldownTime;
+
+  span1.textContent = texts[textIndex % texts.length];
+  span2.textContent = texts[(textIndex + 1) % texts.length];
+
+  const setMorph = fraction => {
+    span2.style.filter  = `blur(${Math.min(8 / fraction - 8, 100)}px)`;
+    span2.style.opacity = Math.pow(fraction, 0.4);
+    const f = 1 - fraction;
+    span1.style.filter  = `blur(${Math.min(8 / f - 8, 100)}px)`;
+    span1.style.opacity = Math.pow(f, 0.4);
+  };
+
+  const tick = () => {
+    requestAnimationFrame(tick);
+    const now = Date.now();
+    const wasInCooldown = cooldown > 0;
+    const dt = (now - time) / 1000;
+    time = now;
+    cooldown -= dt;
+
+    if (cooldown <= 0) {
+      if (wasInCooldown) {
+        textIndex = (textIndex + 1) % texts.length;
+        span1.textContent = texts[textIndex % texts.length];
+        span2.textContent = texts[(textIndex + 1) % texts.length];
+      }
+      morph -= cooldown; cooldown = 0;
+      let f = morph / morphTime;
+      if (f > 1) { cooldown = cooldownTime; f = 1; }
+      setMorph(f);
+    } else {
+      morph = 0;
+      span2.style.filter = ''; span2.style.opacity = '1';
+      span1.style.filter = ''; span1.style.opacity = '0';
+    }
+  };
+  tick();
+}
+
+// ── Animated Text Cycle (CTA before contacto) ─────────────────────────
+function initTextCycle() {
+  const el = document.getElementById('textCycle');
+  if (!el) return;
+  const words = ['empresa', 'equipo', 'proceso', 'campaña', 'marca', 'negocio', 'proyecto'];
+  let index = 0;
+  el.textContent = words[0];
+  el.classList.add('cycle-visible');
+
+  setInterval(() => {
+    el.classList.remove('cycle-visible');
+    el.classList.add('cycle-exit');
+    setTimeout(() => {
+      index = (index + 1) % words.length;
+      el.textContent = words[index];
+      el.classList.remove('cycle-exit');
+      void el.offsetWidth; // force reflow
+      el.classList.add('cycle-visible');
+    }, 300);
+  }, 3000);
+}
+
 // ── WebGL Shader Background — Orange Plasma (Hero) ───────────────────
 function initShaderBg() {
   const canvas = document.getElementById('shaderCanvas');
@@ -1422,9 +1496,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Service card accordion
     initServiceAccordion();
 
-    // Shader background + Orbital timeline
+    // Shader background + Gooey text + Text cycle
     initShaderBg();
-    initOrbital();
+    initGooeyText();
+    initTextCycle();
 
     // Hide Spline watermark via shadow DOM
     const splineEl = document.querySelector('.neural-spline');

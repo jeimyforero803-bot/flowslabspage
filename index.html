@@ -14,6 +14,16 @@
 </head>
 <body class="loading">
 
+  <!-- Gooey SVG filter -->
+  <svg class="gooey-svg" aria-hidden="true" focusable="false">
+    <defs>
+      <filter id="gooey-threshold">
+        <feColorMatrix in="SourceGraphic" type="matrix"
+          values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 255 -140"/>
+      </filter>
+    </defs>
+  </svg>
+
   <!-- ══ LOADER ══ -->
   <div id="loader">
     <div class="ldr-inner">
@@ -69,6 +79,12 @@
       <div id="heroLogo" class="hero-logo-wrap">
         <img src="LOGOS/LOGO COMPLETO 2.png" alt="FlowsLabs" class="hero-main-logo">
       </div>
+      <div id="heroGooey" class="hero-gooey" aria-label="Inteligencia Artificial">
+        <div class="gooey-inner" style="filter:url(#gooey-threshold)">
+          <span class="gooey-span gooey-span-1"></span>
+          <span class="gooey-span gooey-span-2"></span>
+        </div>
+      </div>
       <p id="heroTagline" class="hero-tagline">Datos que hablan, procesos que fluyen.</p>
       <div id="heroCard" class="hero-card">
         <p>Desarrollamos soluciones con inteligencia artificial para optimizar procesos, automatizar tareas y mejorar la eficiencia de las empresas.</p>
@@ -122,21 +138,9 @@
 
         <div class="enfoque-right reveal-right">
           <div class="neural-wrap">
-            <!-- HUD frame corners -->
-            <div class="and-corner and-tl"></div><div class="and-corner and-tr"></div>
-            <div class="and-corner and-bl"></div><div class="and-corner and-br"></div>
-            <div class="and-hud-badge and-top">NEURAL · FL-09 · ONLINE</div>
-            <div class="and-hud-badge and-bot">AI CORE · ACTIVE</div>
-            <div class="and-scan"></div>
-
             <spline-viewer url="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode" class="neural-spline" loading="lazy"></spline-viewer>
             <div class="neural-spline-cover" aria-hidden="true"></div>
             <canvas id="neuralCanvas" class="neural-canvas" style="display:none"></canvas>
-            <div class="neural-data-tags">
-              <div class="ndt ndt-1">NODES: 256</div>
-              <div class="ndt ndt-2">CONNECTIONS: 1.2K</div>
-              <div class="ndt ndt-3">STATUS: LEARNING</div>
-            </div>
             <svg style="display:none">
               <defs>
                 <linearGradient id="metalH" x1="0" y1="0" x2="1" y2="0">
@@ -521,37 +525,6 @@
         <div class="dl teal-dl"></div>
       </div>
     </div>
-  </section>
-
-  <!-- ══════════════ ORBITAL SERVICES ══════════════ -->
-  <section class="s-orbital">
-    <div class="container orb-header">
-      <div class="orb-header-l reveal-right">
-        <span class="orb-eyebrow">ECOSISTEMA FLOWSLABS</span>
-        <h2 class="dh2 orange">NUESTRO<br>UNIVERSO</h2>
-        <p>Explora el ecosistema completo de soluciones FlowsLabs. Haz clic en cualquier servicio para descubrir cómo podemos transformar tu empresa.</p>
-      </div>
-      <div class="orb-header-r reveal-left">
-        <div class="orb-stats">
-          <div class="orb-stat"><span class="orb-stat-num orange">12</span><span class="orb-stat-lbl">Servicios</span></div>
-          <div class="orb-stat"><span class="orb-stat-num orange">+40</span><span class="orb-stat-lbl">Proyectos</span></div>
-          <div class="orb-stat"><span class="orb-stat-num orange">8</span><span class="orb-stat-lbl">Clientes</span></div>
-        </div>
-      </div>
-    </div>
-    <div class="orbital-stage" id="orbitalStage">
-      <div class="orb-track-ring"></div>
-      <div class="orb-center">
-        <div class="orb-center-pulse"></div>
-        <div class="orb-center-ring r1"></div>
-        <div class="orb-center-ring r2"></div>
-        <div class="orb-center-core">
-          <img src="LOGOS/LOGO COMPLETO 2.png" alt="FL" aria-hidden="true">
-        </div>
-      </div>
-      <div class="orb-info-panel" id="orbInfoPanel"></div>
-    </div>
-    <p class="orb-hint">Haz clic en un nodo para explorar · Haz clic en el fondo para cerrar</p>
   </section>
 
   <!-- ══════════════ LISTA DE SERVICIOS ══════════════ -->
@@ -1006,6 +979,16 @@
         <span class="marquee-item">ZELVA</span><span class="marquee-sep">✦</span>
         <span class="marquee-item">FUND. APRENDER JUGANDO</span><span class="marquee-sep">✦</span>
       </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ TEXT CTA ══════════════ -->
+  <section class="s-text-cta reveal-up">
+    <div class="container">
+      <p class="text-cta-p">
+        Tu <span id="textCycle" class="text-cycle-word"></span><br>merece las mejores soluciones
+      </p>
+      <a href="#contacto" class="btn-orange magnetic text-cta-btn">Empecemos →</a>
     </div>
   </section>
 
