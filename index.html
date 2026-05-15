@@ -8,7 +8,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=6">
+  <link rel="stylesheet" href="styles.css?v=7">
+  <link rel="preload" as="image" href="LOGOS/LOGO COMPLETO 2.png">
+  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
 </head>
 <body class="loading">
 
@@ -127,7 +129,8 @@
             <div class="and-hud-badge and-bot">AI CORE · ACTIVE</div>
             <div class="and-scan"></div>
 
-            <canvas id="neuralCanvas" class="neural-canvas"></canvas>
+            <spline-viewer url="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode" class="neural-spline" loading="lazy"></spline-viewer>
+            <canvas id="neuralCanvas" class="neural-canvas" style="display:none"></canvas>
             <div class="neural-data-tags">
               <div class="ndt ndt-1">NODES: 256</div>
               <div class="ndt ndt-2">CONNECTIONS: 1.2K</div>
@@ -1119,12 +1122,12 @@
     <div class="footer-bar">© 2026 FlowsLabs SAS · Bogotá D.C, Colombia · NIT 902011001-7</div>
   </footer>
 
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
-  <script src="script.js"></script>
+  <!-- Scripts — deferred for performance -->
+  <script defer src="https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+  <script defer src="script.js?v=2"></script>
 </body>
 </html>

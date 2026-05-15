@@ -38,7 +38,7 @@ class ThreeCircuit {
       const geo  = new THREE.SphereGeometry(size, 8, 8);
       const r    = Math.random();
       const col  = r < .45 ? this.ORANGE : r < .85 ? this.TEAL : this.WHITE;
-      const mat  = new THREE.MeshBasicMaterial({ color: col.clone(), transparent: true, opacity: Math.random() * .5 + .3 });
+      const mat  = new THREE.MeshBasicMaterial({ color: col.clone(), transparent: true, opacity: Math.random() * .14 + .05 });
       const mesh = new THREE.Mesh(geo, mat);
       const spread = 30;
       mesh.position.set(
@@ -65,7 +65,7 @@ class ThreeCircuit {
     const geo = new THREE.BufferGeometry();
     geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
     geo.setAttribute('color',    new THREE.BufferAttribute(col, 3));
-    const mat = new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: .45 });
+    const mat = new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: .10 });
     this.lines = new THREE.LineSegments(geo, mat);
     this.scene.add(this.lines);
     this.lPos = pos; this.lCol = col; this.lMax = max;
@@ -1221,7 +1221,7 @@ function initShaderBg() {
   const fsSource = `
     precision mediump float;
     uniform vec2 iR; uniform float iT;
-    const float spd=0.15,lspd=1.0*spd,wspd=0.2*spd,ospd=1.33*spd;
+    const float spd=0.30,lspd=1.0*spd,wspd=0.22*spd,ospd=1.33*spd;
     const float lamp=1.0,lfreq=0.2,wfreq=0.5,wamp=1.0,ofreq=0.5;
     const float mnW=0.01,mxW=0.2,minOs=0.6,maxOs=2.0;
     const vec4 lCol=vec4(0.98,0.45,0.09,1.0);
@@ -1274,7 +1274,7 @@ function initShaderBg() {
   const resLoc = gl.getUniformLocation(prog, 'iR');
   const timLoc = gl.getUniformLocation(prog, 'iT');
 
-  let W = 0, H = 0, rafId, t0 = performance.now(), visible = true;
+  let W = 0, H = 0, rafId, t0 = performance.now(), running = false;
   const resize = () => {
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     W = Math.floor(window.innerWidth * dpr);
@@ -1287,14 +1287,13 @@ function initShaderBg() {
 
   // Pause when hero is scrolled away
   const io = new IntersectionObserver(entries => {
-    visible = entries[0].isIntersecting;
-    if (visible) { t0 = performance.now() - (Date.now() - t0); loop(); }
-    else cancelAnimationFrame(rafId);
+    if (entries[0].isIntersecting) { if (!running) { running = true; loop(); } }
+    else { running = false; cancelAnimationFrame(rafId); }
   }, { threshold: 0 });
   io.observe(canvas);
 
   function loop() {
-    if (!visible) return;
+    if (!running) return;
     gl.useProgram(prog);
     gl.bindBuffer(gl.ARRAY_BUFFER, buf);
     gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
@@ -1304,6 +1303,8 @@ function initShaderBg() {
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     rafId = requestAnimationFrame(loop);
   }
+  // Start immediately — IO will manage pause/resume
+  running = true;
   loop();
 }
 
