@@ -1210,6 +1210,195 @@ function initTilt() {
   });
 }
 
+// ── WebGL Shader Background — Orange Plasma (Hero) ───────────────────
+function initShaderBg() {
+  const canvas = document.getElementById('shaderCanvas');
+  if (!canvas) return;
+  const gl = canvas.getContext('webgl', { alpha: false, antialias: false, powerPreference: 'low-power' });
+  if (!gl) return;
+
+  const vsSource = `attribute vec4 p;void main(){gl_Position=p;}`;
+  const fsSource = `
+    precision mediump float;
+    uniform vec2 iR; uniform float iT;
+    const float spd=0.15,lspd=1.0*spd,wspd=0.2*spd,ospd=1.33*spd;
+    const float lamp=1.0,lfreq=0.2,wfreq=0.5,wamp=1.0,ofreq=0.5;
+    const float mnW=0.01,mxW=0.2,minOs=0.6,maxOs=2.0;
+    const vec4 lCol=vec4(0.98,0.45,0.09,1.0);
+    float rnd(float t){return(cos(t)+cos(t*1.3+1.3)+cos(t*1.4+1.4))/3.0;}
+    float gy(float x,float hf,float off){return rnd(x*lfreq+iT*lspd)*hf*lamp+off;}
+    void main(){
+      vec2 uv=gl_FragCoord.xy/iR.xy;
+      vec2 sp=(gl_FragCoord.xy-iR.xy*.5)/iR.x*10.0;
+      float hf=1.0-(cos(uv.x*6.28)*.5+.5);
+      float vf=1.0-(cos(uv.y*6.28)*.5+.5);
+      sp.y+=rnd(sp.x*wfreq+iT*wspd)*wamp*(.5+hf);
+      sp.x+=rnd(sp.y*wfreq+iT*wspd+2.0)*wamp*hf;
+      vec4 lines=vec4(0.0);
+      for(int l=0;l<10;l++){
+        float nl=float(l)/10.0;
+        float ot=iT*ospd, op=float(l)+sp.x*ofreq;
+        float r=rnd(op+ot)*.5+.5;
+        float hw=mix(mnW,mxW,r*hf)*.5;
+        float off=rnd(op+ot*(1.0+nl))*mix(minOs,maxOs,hf);
+        float lp=gy(sp.x,hf,off);
+        float dw=smoothstep(hw,0.0,abs(lp-sp.y))/2.0+smoothstep(hw*0.15+0.015,hw*0.15,abs(lp-sp.y));
+        float cx=mod(float(l)+iT*lspd,25.0)-12.0;
+        vec2 cp=vec2(cx,gy(cx,hf,off));
+        float dc=smoothstep(0.01+0.015,0.01,length(sp-cp))*4.0;
+        lines+=(dw+dc)*lCol*r;
+      }
+      vec4 bg=mix(vec4(0.04,0.015,0.0,1.0),vec4(0.13,0.048,0.0,1.0),uv.x)*vf;
+      bg.a=1.0;
+      gl_FragColor=bg+lines*0.65;
+    }
+  `;
+
+  const mkShader = (type, src) => {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src); gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) { console.warn(gl.getShaderInfoLog(s)); gl.deleteShader(s); return null; }
+    return s;
+  };
+  const vs = mkShader(gl.VERTEX_SHADER, vsSource);
+  const fs = mkShader(gl.FRAGMENT_SHADER, fsSource);
+  if (!vs || !fs) return;
+  const prog = gl.createProgram();
+  gl.attachShader(prog, vs); gl.attachShader(prog, fs); gl.linkProgram(prog);
+  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return;
+
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  const posLoc = gl.getAttribLocation(prog, 'p');
+  const resLoc = gl.getUniformLocation(prog, 'iR');
+  const timLoc = gl.getUniformLocation(prog, 'iT');
+
+  let W = 0, H = 0, rafId, t0 = performance.now(), visible = true;
+  const resize = () => {
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    W = Math.floor(window.innerWidth * dpr);
+    H = Math.floor(window.innerHeight * dpr);
+    canvas.width = W; canvas.height = H;
+    gl.viewport(0, 0, W, H);
+  };
+  window.addEventListener('resize', resize, { passive: true });
+  resize();
+
+  // Pause when hero is scrolled away
+  const io = new IntersectionObserver(entries => {
+    visible = entries[0].isIntersecting;
+    if (visible) { t0 = performance.now() - (Date.now() - t0); loop(); }
+    else cancelAnimationFrame(rafId);
+  }, { threshold: 0 });
+  io.observe(canvas);
+
+  function loop() {
+    if (!visible) return;
+    gl.useProgram(prog);
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(posLoc);
+    gl.uniform2f(resLoc, W, H);
+    gl.uniform1f(timLoc, (performance.now() - t0) / 1000);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    rafId = requestAnimationFrame(loop);
+  }
+  loop();
+}
+
+// ── Orbital Services Timeline ─────────────────────────────────────────
+function initOrbital() {
+  const stage = document.getElementById('orbitalStage');
+  if (!stage) return;
+
+  const services = [
+    { id: 1, title: 'Agentes IA',       sub: 'VOZ Y CHAT',         desc: 'Asistentes virtuales de voz y chat integrados a WhatsApp, web y CRM. Aprenden de tus conversaciones reales y mejoran con el tiempo.' },
+    { id: 2, title: 'Redes Sociales',   sub: 'SOCIAL MEDIA IA',    desc: 'Copies generados por IA entrenada en tu marca, calendarios editoriales por tendencias y análisis de rendimiento detallado.' },
+    { id: 3, title: 'Automatización',   sub: 'WORKFLOW IA',         desc: 'Flujos automáticos que conectan tus plataformas, eliminan tareas repetitivas y reducen tiempos de respuesta hasta un 50%.' },
+    { id: 4, title: 'Social Listening', sub: 'NLP',                 desc: 'Monitoreo de menciones y sentimiento de marca en redes, foros y medios digitales con alertas configurables en tiempo real.' },
+    { id: 5, title: 'Audiencias IA',    sub: 'MACHINE LEARNING',    desc: 'Segmentación dinámica por comportamiento real y LTV. Activación directa en Meta, Google y TikTok Ads.' },
+    { id: 6, title: 'Dashboards',       sub: 'CONTROL UNIFICADO',   desc: '+20 fuentes de datos integradas. La IA analiza todo y entrega recomendaciones accionables cada semana.' },
+    { id: 7, title: 'Pauta Digital',    sub: 'MEDIA BUYING IA',     desc: 'Redistribución de presupuesto en tiempo real. Reducción del CPA mediante IA continua en Google, Meta y TikTok.' },
+    { id: 8, title: 'MMM',              sub: 'MEDIA MIX MODEL',     desc: 'Modelo econométrico que cuantifica el ROI real de cada canal y optimiza la distribución total del presupuesto de marketing.' },
+  ];
+
+  let angle = 0, autoRotate = true, activeId = null, rafId;
+  const isMobile = window.innerWidth < 768;
+  const radius   = isMobile ? 130 : 220;
+
+  // Build nodes
+  const nodes = services.map((svc, i) => {
+    const el = document.createElement('div');
+    el.className = 'orb-node';
+    el.innerHTML = `
+      <div class="orb-node-dot"><span class="orb-node-num">0${svc.id}</span></div>
+      <div class="orb-node-label"><strong>${svc.title}</strong><small>${svc.sub}</small></div>`;
+    stage.appendChild(el);
+
+    el.addEventListener('click', e => {
+      e.stopPropagation();
+      if (activeId === svc.id) {
+        activeId = null; autoRotate = true;
+        el.classList.remove('orb-node--active');
+        hidePanel();
+      } else {
+        stage.querySelectorAll('.orb-node--active').forEach(n => n.classList.remove('orb-node--active'));
+        activeId = svc.id; autoRotate = false;
+        el.classList.add('orb-node--active');
+        showPanel(svc);
+      }
+    });
+    return { el, svc };
+  });
+
+  stage.addEventListener('click', e => {
+    if (e.target === stage || e.target.classList.contains('orb-track-ring')) {
+      activeId = null; autoRotate = true;
+      stage.querySelectorAll('.orb-node--active').forEach(n => n.classList.remove('orb-node--active'));
+      hidePanel();
+    }
+  });
+
+  function showPanel(svc) {
+    const p = document.getElementById('orbInfoPanel');
+    if (!p) return;
+    p.innerHTML = `<div class="orb-info-content">
+      <span class="orb-info-tag" style="color:var(--orange)">${svc.sub}</span>
+      <h3 class="orb-info-title">${svc.title}</h3>
+      <p class="orb-info-desc">${svc.desc}</p>
+      <a href="#servicios" class="orb-info-cta">Ver servicio completo →</a>
+    </div>`;
+    requestAnimationFrame(() => p.classList.add('orb-info--show'));
+  }
+  function hidePanel() {
+    const p = document.getElementById('orbInfoPanel');
+    if (p) p.classList.remove('orb-info--show');
+  }
+
+  const N = nodes.length;
+  function tick() {
+    if (autoRotate) angle += 0.0025;
+    nodes.forEach(({ el }, i) => {
+      const a = (i / N) * Math.PI * 2 + angle;
+      const x = Math.cos(a) * radius;
+      const y = Math.sin(a) * radius * 0.4; // flatten to ellipse
+      const depth = (Math.sin(a - Math.PI / 2) + 1) / 2;
+      el.style.transform = `translate(${x}px, ${y}px) scale(${0.72 + depth * 0.36})`;
+      el.style.opacity   = String(0.3 + depth * 0.7);
+      el.style.zIndex    = String(Math.round(depth * 90 + 10));
+    });
+    rafId = requestAnimationFrame(tick);
+  }
+
+  // Pause when off screen
+  const io = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) tick();
+    else cancelAnimationFrame(rafId);
+  }, { threshold: 0.1 });
+  io.observe(stage);
+}
+
 // ─── Entry Point ──────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   initLoader(() => {
@@ -1231,6 +1420,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Service card accordion
     initServiceAccordion();
+
+    // Shader background + Orbital timeline
+    initShaderBg();
+    initOrbital();
 
     // Interactions
     new Cursor();

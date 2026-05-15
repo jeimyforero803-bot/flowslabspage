@@ -51,6 +51,7 @@
 
   <!-- ══════════════ HERO ══════════════ -->
   <section id="inicio" class="hero">
+    <canvas id="shaderCanvas" aria-hidden="true"></canvas>
     <canvas id="threeCanvas"></canvas>
 
     <div class="orbit-rings left-orbit" aria-hidden="true">
@@ -448,7 +449,7 @@
         <!-- IMAGE COL -->
         <div class="exp-left reveal-right">
           <div class="tech-img-frame">
-            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=900&q=85&auto=format&fit=crop" alt="Tech Team FlowsLabs" loading="lazy">
+            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=700&q=75&auto=format&fit=crop" alt="Tech Team FlowsLabs" loading="lazy" decoding="async">
             <div class="scan-line"></div>
             <div class="corner tl"></div><div class="corner tr"></div>
             <div class="corner bl"></div><div class="corner br"></div>
@@ -516,6 +517,37 @@
         <div class="dl teal-dl"></div>
       </div>
     </div>
+  </section>
+
+  <!-- ══════════════ ORBITAL SERVICES ══════════════ -->
+  <section class="s-orbital">
+    <div class="container orb-header">
+      <div class="orb-header-l reveal-right">
+        <span class="orb-eyebrow">ECOSISTEMA FLOWSLABS</span>
+        <h2 class="dh2 orange">NUESTRO<br>UNIVERSO</h2>
+        <p>Explora el ecosistema completo de soluciones FlowsLabs. Haz clic en cualquier servicio para descubrir cómo podemos transformar tu empresa.</p>
+      </div>
+      <div class="orb-header-r reveal-left">
+        <div class="orb-stats">
+          <div class="orb-stat"><span class="orb-stat-num orange">12</span><span class="orb-stat-lbl">Servicios</span></div>
+          <div class="orb-stat"><span class="orb-stat-num orange">+40</span><span class="orb-stat-lbl">Proyectos</span></div>
+          <div class="orb-stat"><span class="orb-stat-num orange">8</span><span class="orb-stat-lbl">Clientes</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="orbital-stage" id="orbitalStage">
+      <div class="orb-track-ring"></div>
+      <div class="orb-center">
+        <div class="orb-center-pulse"></div>
+        <div class="orb-center-ring r1"></div>
+        <div class="orb-center-ring r2"></div>
+        <div class="orb-center-core">
+          <img src="LOGOS/LOGO COMPLETO 2.png" alt="FL" aria-hidden="true">
+        </div>
+      </div>
+      <div class="orb-info-panel" id="orbInfoPanel"></div>
+    </div>
+    <p class="orb-hint">Haz clic en un nodo para explorar · Haz clic en el fondo para cerrar</p>
   </section>
 
   <!-- ══════════════ LISTA DE SERVICIOS ══════════════ -->
