@@ -211,7 +211,7 @@ img { display: block; max-width: 100%; }
 .neural-wrap {
   position: relative;
   display: flex; justify-content: center; align-items: center;
-  min-height: 520px;
+  min-height: 780px;
   background: radial-gradient(ellipse at 50% 50%, rgba(249,115,22,0.06) 0%, rgba(26,100,120,0.12) 45%, rgba(8,8,8,0) 80%);
   border-radius: 4px;
   overflow: hidden;
@@ -982,7 +982,7 @@ img { display: block; max-width: 100%; }
   .exp-title { font-size: clamp(1.8rem, 7.5vw, 3.5rem); line-height: 1; }
   /* Neural canvas — restore closer to original size */
   .neural-canvas { height: 450px; }
-  .neural-wrap { min-height: 450px; }
+  .neural-wrap { min-height: 600px; }
   /* Enfoque section — top padding so heading is never flush against section edge */
   .s-enfoque { padding-top: 3rem; }
   /* Heading top spacing to absorb line-height (.93) glyph bleed above line box */
@@ -997,7 +997,7 @@ img { display: block; max-width: 100%; }
   .dh2 { font-size: clamp(1.4rem, 7.5vw, 3rem); line-height: 1.05; }
   .exp-title { font-size: clamp(1.4rem, 7.5vw, 3rem); line-height: 1.05; }
   .neural-canvas { height: 380px; }
-  .neural-wrap { min-height: 380px; }
+  .neural-wrap { min-height: 440px; }
 }
 
 /* Spline bot viewer */
@@ -1009,9 +1009,17 @@ img { display: block; max-width: 100%; }
   z-index: 2;
   filter: sepia(0.25) saturate(5) hue-rotate(-18deg) brightness(1.15) drop-shadow(0 0 60px rgba(249,115,22,0.45));
 }
-/* Spline viewer removes its own UI chrome */
-.neural-spline::part(logo),
-.neural-spline::part(watermark) { display: none !important; }
+/* Cover the "Built with Spline" badge at bottom-right */
+.neural-spline-cover {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 220px;
+  height: 56px;
+  background: var(--black);
+  z-index: 100;
+  pointer-events: none;
+}
 
 /* ══════════════════════════════════════════════════
    SHADER CANVAS — Hero background (WebGL plasma)

@@ -1426,6 +1426,20 @@ document.addEventListener('DOMContentLoaded', () => {
     initShaderBg();
     initOrbital();
 
+    // Hide Spline watermark via shadow DOM
+    const splineEl = document.querySelector('.neural-spline');
+    if (splineEl) {
+      const tryHide = () => {
+        const root = splineEl.shadowRoot;
+        if (root) {
+          const badge = root.querySelector('#logo, .logo, [class*="logo"], a[href*="spline"]');
+          if (badge) { badge.style.display = 'none'; return; }
+        }
+        setTimeout(tryHide, 800);
+      };
+      setTimeout(tryHide, 1500);
+    }
+
     // Interactions
     new Cursor();
     initLenis();
