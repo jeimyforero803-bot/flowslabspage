@@ -9,16 +9,17 @@ class ThreeCircuit {
     this.canvas   = canvas;
     this.scene    = new THREE.Scene();
     this.camera   = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-    this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    this.renderer = new THREE.WebGLRenderer({ canvas, antialias: window.innerWidth >= 768, alpha: true });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, window.innerWidth < 768 ? 1.5 : 2));
     this.camera.position.set(0, 0, 38);
 
     this.mouse  = { x: 0, y: 0 };
     this.rot    = { x: 0, y: 0 };
     this.nodes  = [];
     this.time   = 0;
-    this.active = true;
+    this._vis   = true;
+    this._run   = false;
 
     this.ORANGE = new THREE.Color('#F97316');
     this.TEAL   = new THREE.Color('#1A6478');
@@ -32,7 +33,7 @@ class ThreeCircuit {
   }
 
   buildNodes() {
-    const count = window.innerWidth < 768 ? 45 : 80;
+    const count = window.innerWidth < 768 ? 22 : 48;
     for (let i = 0; i < count; i++) {
       const size = Math.random() * .28 + .07;
       const geo  = new THREE.SphereGeometry(size, 8, 8);
@@ -59,7 +60,7 @@ class ThreeCircuit {
   }
 
   buildLines() {
-    const max = 300;
+    const max = 140;
     const pos = new Float32Array(max * 2 * 3);
     const col = new Float32Array(max * 2 * 3);
     const geo = new THREE.BufferGeometry();
@@ -118,14 +119,20 @@ class ThreeCircuit {
       this.mouse.x = (e.clientX / window.innerWidth  - .5) * 2;
       this.mouse.y = (e.clientY / window.innerHeight - .5) * 2;
     });
-    window.addEventListener('scroll', () => {
-      this.active = window.scrollY < window.innerHeight * 1.5;
-    });
+    // Real visibility gating — the previous scroll-position heuristic kept
+    // at least one requestAnimationFrame alive for the entire page lifetime;
+    // this fully stops the loop once the hero canvas leaves the viewport.
+    const io = new IntersectionObserver(entries => {
+      this._vis = entries[0].isIntersecting;
+      if (this._vis && !this._run) this.tick();
+    }, { threshold: 0 });
+    io.observe(this.canvas);
   }
 
   tick() {
+    if (!this._vis || document.hidden) { this._run = false; return; }
+    this._run = true;
     requestAnimationFrame(() => this.tick());
-    if (!this.active) return;
     this.time += .01;
     this.nodes.forEach(n => {
       if (n.geometry.type === 'SphereGeometry') {
@@ -158,9 +165,15 @@ class MatrixRain {
     this.chars  = '01アイウエオカキフロウスラブスAI10';
     this.fs     = 13;
     this.cols   = [];
+    this._vis   = false;
+    this._run   = false;
     this.resize();
     window.addEventListener('resize', () => this.resize());
-    this.tick();
+    const io = new IntersectionObserver(e => {
+      this._vis = e[0].isIntersecting;
+      if (this._vis && !this._run) this.tick();
+    }, { threshold: 0 });
+    io.observe(this.canvas);
   }
   resize() {
     const p = this.canvas.parentElement;
@@ -169,6 +182,8 @@ class MatrixRain {
     this.cols = new Array(Math.floor(this.canvas.width / this.fs)).fill(1);
   }
   tick() {
+    if (!this._vis || document.hidden) { this._run = false; return; }
+    this._run = true;
     const ctx = this.ctx;
     ctx.fillStyle = 'rgba(13,13,13,.07)';
     ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
@@ -193,9 +208,15 @@ class SectionParticles {
     this.ctx    = canvas.getContext('2d');
     this.pts    = [];
     this.t      = 0;
+    this._vis   = false;
+    this._run   = false;
     this.resize();
     window.addEventListener('resize', () => this.resize());
-    this.tick();
+    const io = new IntersectionObserver(e => {
+      this._vis = e[0].isIntersecting;
+      if (this._vis && !this._run) this.tick();
+    }, { threshold: 0 });
+    io.observe(this.canvas);
   }
   resize() {
     const p = this.canvas.parentElement;
@@ -215,6 +236,8 @@ class SectionParticles {
     });
   }
   tick() {
+    if (!this._vis || document.hidden) { this._run = false; return; }
+    this._run = true;
     const ctx = this.ctx;
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.t += .012;
@@ -249,222 +272,8 @@ class SectionParticles {
   }
 }
 
-// ── Neural Sphere (Three.js) ──────────────────────────────────────────
-class NeuralSphere {
-  constructor(canvas) {
-    if (typeof THREE === 'undefined') return;
-    this.canvas = canvas;
-    const w = canvas.parentElement.clientWidth || 500;
-    const h = canvas.parentElement.clientHeight || 520;
-
-    this.scene    = new THREE.Scene();
-    this.camera   = new THREE.PerspectiveCamera(55, w / h, 0.1, 200);
-    this.camera.position.set(0, 0, 5.5);
-    this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-    this.renderer.setSize(w, h);
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    this.renderer.setClearColor(0x000000, 0);
-
-    this.mouse  = { x: 0, y: 0 };
-    this.target = { x: 0, y: 0 };
-    this.time   = 0;
-
-    this.ORANGE = new THREE.Color('#F97316');
-    this.TEAL   = new THREE.Color('#1A6478');
-
-    this.group = new THREE.Group();
-    this.scene.add(this.group);
-
-    this.buildSphere();
-    this.buildRings();
-    this.buildConnections();
-    this.buildAmbientParticles();
-    this.bindEvents();
-    this.tick();
-  }
-
-  buildSphere() {
-    // 220 Fibonacci-distributed points on a sphere
-    const count   = 220;
-    const positions = new Float32Array(count * 3);
-    const colors    = new Float32Array(count * 3);
-    const sizes     = new Float32Array(count);
-    const phi = Math.PI * (3 - Math.sqrt(5)); // golden angle
-
-    this.nodePositions = [];
-
-    for (let i = 0; i < count; i++) {
-      const y   = 1 - (i / (count - 1)) * 2;
-      const r   = Math.sqrt(1 - y * y);
-      const th  = phi * i;
-      const x   = Math.cos(th) * r;
-      const z   = Math.sin(th) * r;
-      const R   = 2.0 + (Math.random() - 0.5) * 0.25;
-
-      positions[i * 3]     = x * R;
-      positions[i * 3 + 1] = y * R;
-      positions[i * 3 + 2] = z * R;
-      this.nodePositions.push(new THREE.Vector3(x * R, y * R, z * R));
-
-      const t = Math.random();
-      const c = t < 0.55 ? this.ORANGE : this.TEAL;
-      colors[i * 3]     = c.r;
-      colors[i * 3 + 1] = c.g;
-      colors[i * 3 + 2] = c.b;
-      sizes[i] = Math.random() * 3 + 1.5;
-    }
-
-    const geo = new THREE.BufferGeometry();
-    geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    geo.setAttribute('color',    new THREE.BufferAttribute(colors, 3));
-    geo.setAttribute('size',     new THREE.BufferAttribute(sizes, 1));
-
-    const mat = new THREE.PointsMaterial({
-      vertexColors: true,
-      sizeAttenuation: true,
-      size: 0.06,
-      transparent: true,
-      opacity: 0.85,
-      depthWrite: false,
-    });
-
-    this.sphere = new THREE.Points(geo, mat);
-    this.group.add(this.sphere);
-
-    // ── SKILL: Three.js — Additive blending glow pass ──
-    // Second identical point cloud at 3x size with AdditiveBlending = bloom-like glow
-    const glowMat = new THREE.PointsMaterial({
-      vertexColors: true,
-      sizeAttenuation: true,
-      size: 0.18,
-      transparent: true,
-      opacity: 0.12,
-      depthWrite: false,
-      blending: THREE.AdditiveBlending,
-    });
-    this.glowSphere = new THREE.Points(geo, glowMat);
-    this.group.add(this.glowSphere);
-  }
-
-  buildRings() {
-    this.rings = [];
-    const ringDefs = [
-      { radius: 2.15, tube: 0.007, color: '#F97316', tiltX: 0.35, tiltZ: 0.1,  speed: 0.004 },
-      { radius: 2.15, tube: 0.005, color: '#1A6478', tiltX: 1.22, tiltZ: 0.55, speed: -0.003 },
-      { radius: 2.15, tube: 0.006, color: '#F97316', tiltX: 0.65, tiltZ: 1.05, speed: 0.0025 },
-    ];
-    ringDefs.forEach(def => {
-      const geo = new THREE.TorusGeometry(def.radius, def.tube, 6, 120);
-      const mat = new THREE.MeshBasicMaterial({
-        color: def.color, transparent: true, opacity: 0.55, depthWrite: false
-      });
-      const ring = new THREE.Mesh(geo, mat);
-      ring.rotation.x = def.tiltX;
-      ring.rotation.z = def.tiltZ;
-      ring.userData.speed = def.speed;
-      this.group.add(ring);
-      this.rings.push(ring);
-    });
-  }
-
-  buildConnections() {
-    // Connect nearby nodes with faint lines
-    const maxDist = 1.1;
-    const verts   = [];
-    const cols    = [];
-    const nodes   = this.nodePositions;
-
-    for (let i = 0; i < nodes.length; i++) {
-      for (let j = i + 1; j < nodes.length; j++) {
-        if (nodes[i].distanceTo(nodes[j]) < maxDist) {
-          verts.push(nodes[i].x, nodes[i].y, nodes[i].z);
-          verts.push(nodes[j].x, nodes[j].y, nodes[j].z);
-          const t = Math.random();
-          const c = t < 0.5 ? this.ORANGE : this.TEAL;
-          cols.push(c.r, c.g, c.b, c.r, c.g, c.b);
-        }
-      }
-    }
-
-    const geo = new THREE.BufferGeometry();
-    geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(verts), 3));
-    geo.setAttribute('color',    new THREE.BufferAttribute(new Float32Array(cols), 3));
-
-    const mat = new THREE.LineBasicMaterial({
-      vertexColors: true, transparent: true, opacity: 0.12, depthWrite: false
-    });
-    this.lines = new THREE.LineSegments(geo, mat);
-    this.group.add(this.lines);
-  }
-
-  buildAmbientParticles() {
-    // 80 slow-drifting particles in a wider shell
-    const count = 80;
-    const pos   = new Float32Array(count * 3);
-    const col   = new Float32Array(count * 3);
-    for (let i = 0; i < count; i++) {
-      const r = 2.8 + Math.random() * 1.4;
-      const th = Math.random() * Math.PI * 2;
-      const ph = Math.acos(2 * Math.random() - 1);
-      pos[i * 3]     = r * Math.sin(ph) * Math.cos(th);
-      pos[i * 3 + 1] = r * Math.sin(ph) * Math.sin(th);
-      pos[i * 3 + 2] = r * Math.cos(ph);
-      const c = Math.random() < 0.6 ? this.ORANGE : this.TEAL;
-      col[i * 3] = c.r; col[i * 3 + 1] = c.g; col[i * 3 + 2] = c.b;
-    }
-    const geo = new THREE.BufferGeometry();
-    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    geo.setAttribute('color',    new THREE.BufferAttribute(col, 3));
-    const mat = new THREE.PointsMaterial({
-      vertexColors: true, size: 0.04, transparent: true, opacity: 0.4,
-      sizeAttenuation: true, depthWrite: false
-    });
-    this.ambient = new THREE.Points(geo, mat);
-    this.scene.add(this.ambient);
-  }
-
-  bindEvents() {
-    const canvas = this.canvas;
-    const rect   = () => canvas.getBoundingClientRect();
-    window.addEventListener('mousemove', e => {
-      const r = rect();
-      this.mouse.x =  ((e.clientX - r.left)  / r.width  - 0.5) * 2;
-      this.mouse.y = -((e.clientY - r.top)   / r.height - 0.5) * 2;
-    });
-    window.addEventListener('resize', () => {
-      const p = canvas.parentElement;
-      const w = p.clientWidth || 500;
-      const h = p.clientHeight || 520;
-      this.camera.aspect = w / h;
-      this.camera.updateProjectionMatrix();
-      this.renderer.setSize(w, h);
-    });
-  }
-
-  tick() {
-    requestAnimationFrame(() => this.tick());
-    this.time += 0.007;
-
-    // Smooth mouse-driven rotation
-    this.target.x += (this.mouse.y * 0.6 - this.target.x) * 0.04;
-    this.target.y += (this.mouse.x * 0.6 - this.target.y) * 0.04;
-    this.group.rotation.x = this.target.x;
-    this.group.rotation.y = this.target.y + this.time * 0.18;
-
-    // Animate rings
-    this.rings.forEach(r => { r.rotation.y += r.userData.speed; });
-
-    // Pulse node opacity + glow sync
-    this.sphere.material.opacity = 0.7 + 0.15 * Math.sin(this.time * 1.2);
-    if (this.glowSphere) this.glowSphere.material.opacity = 0.06 + 0.06 * Math.sin(this.time * 0.8);
-
-    // Slow ambient drift
-    this.ambient.rotation.y += 0.0008;
-    this.ambient.rotation.x += 0.0004;
-
-    this.renderer.render(this.scene, this.camera);
-  }
-}
+// NeuralSphere (Three.js version of the hero illustration) removed —
+// the hand-drawn android SVG in the enfoque section replaces it (pure CSS animation, no JS).
 
 // ── Service Card Visualizations ──────────────────────────────────────
 class SvcViz {
@@ -473,8 +282,18 @@ class SvcViz {
     this.ctx = canvas.getContext('2d');
     this.t   = 0;
     this.type = canvas.dataset.viz || 'agents';
+    this._vis = true;
+    this._run = false;
     this.resize();
     window.addEventListener('resize', () => this.resize());
+    // Pause/resume with visibility — without this a card animated once
+    // years ago just keeps painting off-screen forever (up to 12 of these
+    // running at once after a normal scroll through the services grid).
+    const io = new IntersectionObserver(entries => {
+      this._vis = entries[0].isIntersecting;
+      if (this._vis && !this._run) this.tick();
+    }, { threshold: 0 });
+    io.observe(canvas.closest('.svc-item') || canvas);
     this.tick();
   }
   resize() {
@@ -565,6 +384,8 @@ class SvcViz {
   }
 
   tick() {
+    if (!this._vis || document.hidden) { this._run = false; return; }
+    this._run = true;
     requestAnimationFrame(() => this.tick());
     this.t += 0.016;
     const { ctx, W, H, t, type, data } = this;
@@ -741,7 +562,17 @@ class SvcViz {
 }
 
 function initSvcViz() {
-  document.querySelectorAll('.svc-viz').forEach(cv => new SvcViz(cv));
+  document.querySelectorAll('.svc-viz').forEach(cv => {
+    let started = false;
+    const io = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && !started) {
+        started = true;
+        new SvcViz(cv);
+        io.disconnect();
+      }
+    }, { threshold: 0 });
+    io.observe(cv.closest('.svc-item') || cv);
+  });
 }
 
 // ── Service Card Accordion ────────────────────────────────────────────
@@ -787,14 +618,6 @@ function initServiceAccordion() {
   document.querySelectorAll('.svc-expand-cta').forEach(cta => {
     cta.addEventListener('click', e => e.stopPropagation());
   });
-}
-
-// ── Neural Sphere Init ────────────────────────────────────────────────
-function initNeuralSphere() {
-  const canvas = document.getElementById('neuralCanvas');
-  if (!canvas) return;
-  if (typeof THREE === 'undefined') return;
-  new NeuralSphere(canvas);
 }
 
 // ── Page Loader ──────────────────────────────────────────────────────
@@ -989,19 +812,9 @@ function initGSAP() {
     });
   });
 
-  // ─ Section headings — staggered clip-path reveal via ScrollTrigger
-  document.querySelectorAll('.dh2').forEach(el => {
-    gsap.fromTo(el,
-      { clipPath: 'inset(0 100% 0 0)', opacity: 0 },
-      {
-        clipPath: 'inset(0 0% 0 0)', opacity: 1,
-        duration: 1.1, ease: 'power3.inOut',
-        scrollTrigger: {
-          trigger: el, start: 'top 85%', once: true
-        }
-      }
-    );
-  });
+  // Section headings (.dh2) intentionally have no GSAP reveal here — the
+  // matrix letter-scramble effect (initMatrixText) already animates them in
+  // on scroll. Running both was two effects fighting on the same heading.
 
   // ─ Hero background parallax on scroll
   const hero = document.querySelector('.hero');
@@ -1107,13 +920,6 @@ function initWAAPI() {
   });
 }
 
-// ══════════════════════════════════════════════════════════════════════
-// SKILL: Three.js — Enhance NeuralSphere with glow additive blending
-// Adds a ghost sphere with AdditiveBlending for bloom-like glow
-// ══════════════════════════════════════════════════════════════════════
-// (Applied inside NeuralSphere.buildSphere — see class above, adds a
-// second PointsMaterial pass with AdditiveBlending at larger size)
-
 // ── IntersectionObserver Reveals (reliable, no library dependency) ───
 function initRevealObserver() {
   const observer = new IntersectionObserver((entries) => {
@@ -1139,7 +945,7 @@ function initNavbar() {
   if (!navbar) return;
   window.addEventListener('scroll', () => {
     navbar.classList.toggle('scrolled', window.scrollY > 60);
-  });
+  }, { passive: true });
   // Mobile menu
   const hamburger = document.getElementById('hamburger');
   const navLinks  = document.getElementById('navLinks');
@@ -1165,16 +971,22 @@ function initNavbar() {
         navItems.forEach(a => a.classList.toggle('active', a.getAttribute('href') === `#${id}`));
       }
     });
-  });
+  }, { passive: true });
 }
 
 // ── Smooth Scroll Anchors ─────────────────────────────────────────────
-function initSmoothScroll() {
+// Routes through the Lenis instance when it's running, so anchor clicks use
+// the same smoothing curve as wheel scroll instead of fighting it with a
+// second, native smooth-scroll animation.
+function initSmoothScroll(lenis) {
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', function(e) {
       const target = document.querySelector(this.getAttribute('href'));
-      if (target) {
-        e.preventDefault();
+      if (!target) return;
+      e.preventDefault();
+      if (lenis) {
+        lenis.scrollTo(target, { offset: -80 });
+      } else {
         const top = target.getBoundingClientRect().top + window.scrollY - 80;
         window.scrollTo({ top, behavior: 'smooth' });
       }
@@ -1237,6 +1049,7 @@ function initGooeyText() {
 
   const tick = () => {
     requestAnimationFrame(tick);
+    if (document.hidden) return;
     const now = Date.now();
     const wasInCooldown = cooldown > 0;
     const dt = (now - time) / 1000;
@@ -1266,7 +1079,7 @@ function initGooeyText() {
 function initTextCycle() {
   const el = document.getElementById('textCycle');
   if (!el) return;
-  const words = ['empresa', 'equipo', 'proceso', 'campaña', 'marca', 'negocio', 'proyecto'];
+  const words = ['empresa', 'equipo', 'proceso', 'marca', 'negocio', 'proyecto'];
   let index = 0;
   el.textContent = words[0];
   el.classList.add('cycle-visible');
@@ -1295,7 +1108,7 @@ function initShaderBg() {
   const fsSource = `
     precision mediump float;
     uniform vec2 iR; uniform float iT;
-    const float spd=0.30,lspd=1.0*spd,wspd=0.22*spd,ospd=1.33*spd;
+    const float spd=0.10,lspd=1.0*spd,wspd=0.18*spd,ospd=1.2*spd;
     const float lamp=1.0,lfreq=0.2,wfreq=0.5,wamp=1.0,ofreq=0.5;
     const float mnW=0.01,mxW=0.2,minOs=0.6,maxOs=2.0;
     const vec4 lCol=vec4(0.98,0.45,0.09,1.0);
@@ -1324,7 +1137,7 @@ function initShaderBg() {
       }
       vec4 bg=mix(vec4(0.04,0.015,0.0,1.0),vec4(0.13,0.048,0.0,1.0),uv.x)*vf;
       bg.a=1.0;
-      gl_FragColor=bg+lines*0.65;
+      gl_FragColor=bg+lines*0.28;
     }
   `;
 
@@ -1382,98 +1195,171 @@ function initShaderBg() {
   loop();
 }
 
-// ── Orbital Services Timeline ─────────────────────────────────────────
-function initOrbital() {
-  const stage = document.getElementById('orbitalStage');
-  if (!stage) return;
+// ── GTM DataLayer — Service & CTA Tracking ────────────────────────────
+function initGTMTracking() {
+  window.dataLayer = window.dataLayer || [];
 
-  const services = [
-    { id: 1, title: 'Agentes IA',       sub: 'VOZ Y CHAT',         desc: 'Asistentes virtuales de voz y chat integrados a WhatsApp, web y CRM. Aprenden de tus conversaciones reales y mejoran con el tiempo.' },
-    { id: 2, title: 'Redes Sociales',   sub: 'SOCIAL MEDIA IA',    desc: 'Copies generados por IA entrenada en tu marca, calendarios editoriales por tendencias y análisis de rendimiento detallado.' },
-    { id: 3, title: 'Automatización',   sub: 'WORKFLOW IA',         desc: 'Flujos automáticos que conectan tus plataformas, eliminan tareas repetitivas y reducen tiempos de respuesta hasta un 50%.' },
-    { id: 4, title: 'Social Listening', sub: 'NLP',                 desc: 'Monitoreo de menciones y sentimiento de marca en redes, foros y medios digitales con alertas configurables en tiempo real.' },
-    { id: 5, title: 'Audiencias IA',    sub: 'MACHINE LEARNING',    desc: 'Segmentación dinámica por comportamiento real y LTV. Activación directa en Meta, Google y TikTok Ads.' },
-    { id: 6, title: 'Dashboards',       sub: 'CONTROL UNIFICADO',   desc: '+20 fuentes de datos integradas. La IA analiza todo y entrega recomendaciones accionables cada semana.' },
-    { id: 7, title: 'Pauta Digital',    sub: 'MEDIA BUYING IA',     desc: 'Redistribución de presupuesto en tiempo real. Reducción del CPA mediante IA continua en Google, Meta y TikTok.' },
-    { id: 8, title: 'MMM',              sub: 'MEDIA MIX MODEL',     desc: 'Modelo econométrico que cuantifica el ROI real de cada canal y optimiza la distribución total del presupuesto de marketing.' },
+  // Helper
+  const push = (event, params) => window.dataLayer.push({ event, ...params });
+
+  // 1. Track section visibility (IntersectionObserver per section)
+  const sections = [
+    { selector: '#enfoque',   name: 'Nuestro Enfoque' },
+    { selector: '#expertos',  name: 'Expertos' },
+    { selector: '#servicios', name: 'Servicios' },
+    { selector: '#clientes',  name: 'Clientes' },
+    { selector: '#contacto',  name: 'Contacto' },
   ];
+  sections.forEach(({ selector, name }) => {
+    const el = document.querySelector(selector);
+    if (!el) return;
+    const io = new IntersectionObserver(entries => {
+      if (!entries[0].isIntersecting) return;
+      push('section_view', { section_name: name, page_path: window.location.pathname });
+      io.disconnect();
+    }, { threshold: 0.3 });
+    io.observe(el);
+  });
 
-  let angle = 0, autoRotate = true, activeId = null, rafId;
-  const isMobile = window.innerWidth < 768;
-  const radius   = isMobile ? 130 : 220;
+  // 2. Track each service card becoming visible
+  const serviceNames = {
+    'Agentes de IA':             'agentes_ia',
+    'Manejo de Redes Sociales':  'redes_sociales_ia',
+    'Medición de Competidores':  'medicion_competidores',
+    'Social Listening':          'social_listening',
+    'Audiencias Inteligentes':   'audiencias_ml',
+    'Control Unificado':         'dashboards_bi',
+    'Calculadora de Influencers':'calculadora_influencers',
+    'Videos y Doblaje con IA':   'video_ia',
+    'Pauta Digital Inteligente': 'pauta_digital_ia',
+    'Modelos de Predicción':     'modelos_prediccion',
+    'Modelos de Atribución':     'modelos_atribucion',
+    'MMM':                       'marketing_mix_model',
+  };
 
-  // Build nodes
-  const nodes = services.map((svc, i) => {
-    const el = document.createElement('div');
-    el.className = 'orb-node';
-    el.innerHTML = `
-      <div class="orb-node-dot"><span class="orb-node-num">0${svc.id}</span></div>
-      <div class="orb-node-label"><strong>${svc.title}</strong><small>${svc.sub}</small></div>`;
-    stage.appendChild(el);
+  document.querySelectorAll('.svc-item').forEach(card => {
+    const title = card.querySelector('h3')?.textContent?.trim() || '';
+    const serviceName = Object.entries(serviceNames).find(([k]) => title.includes(k))?.[1] || title;
+    const io = new IntersectionObserver(entries => {
+      if (!entries[0].isIntersecting) return;
+      push('service_view', { service_name: serviceName, service_title: title });
+      io.disconnect();
+    }, { threshold: 0.5 });
+    io.observe(card);
 
-    el.addEventListener('click', e => {
-      e.stopPropagation();
-      if (activeId === svc.id) {
-        activeId = null; autoRotate = true;
-        el.classList.remove('orb-node--active');
-        hidePanel();
-      } else {
-        stage.querySelectorAll('.orb-node--active').forEach(n => n.classList.remove('orb-node--active'));
-        activeId = svc.id; autoRotate = false;
-        el.classList.add('orb-node--active');
-        showPanel(svc);
+    // Click on service card
+    card.addEventListener('click', () => {
+      push('service_click', { service_name: serviceName, service_title: title });
+    });
+  });
+
+  // 3. Track CTA button clicks
+  document.querySelectorAll('a[href="#contacto"], a[href="#servicios"], .btn-orange, .btn-ghost, .text-cta-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      push('cta_click', {
+        cta_text:     btn.textContent?.trim(),
+        cta_location: btn.closest('section')?.id || 'hero',
+        cta_type:     btn.classList.contains('btn-orange') ? 'primary' : 'secondary',
+      });
+    });
+  });
+
+  // 4. Track contact form submission
+  const form = document.querySelector('#contacto form, form');
+  if (form) {
+    form.addEventListener('submit', () => {
+      push('form_submit', {
+        form_name:     'contacto_flowslabs',
+        form_location: 'contacto',
+      });
+      gtag('event', 'conversion', { send_to: 'G-PBNX2916K4' });
+    });
+  }
+
+  // 5. Track scroll depth milestones
+  const depths = [25, 50, 75, 90];
+  const reached = new Set();
+  window.addEventListener('scroll', () => {
+    const pct = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+    depths.forEach(d => {
+      if (pct >= d && !reached.has(d)) {
+        reached.add(d);
+        push('scroll_depth', { depth_percent: d });
       }
     });
-    return { el, svc };
+  }, { passive: true });
+
+  // 6. Track time on page milestones (30s, 60s, 120s)
+  [30, 60, 120].forEach(sec => {
+    setTimeout(() => push('time_on_page', { seconds: sec }), sec * 1000);
   });
 
-  stage.addEventListener('click', e => {
-    if (e.target === stage || e.target.classList.contains('orb-track-ring')) {
-      activeId = null; autoRotate = true;
-      stage.querySelectorAll('.orb-node--active').forEach(n => n.classList.remove('orb-node--active'));
-      hidePanel();
-    }
+  // 7. Page view with enriched data
+  push('page_view_enriched', {
+    page_title:    document.title,
+    page_url:      window.location.href,
+    content_group: 'Home',
+    language:      'es',
+    site:          'flowslabssas.com',
   });
-
-  function showPanel(svc) {
-    const p = document.getElementById('orbInfoPanel');
-    if (!p) return;
-    p.innerHTML = `<div class="orb-info-content">
-      <span class="orb-info-tag" style="color:var(--orange)">${svc.sub}</span>
-      <h3 class="orb-info-title">${svc.title}</h3>
-      <p class="orb-info-desc">${svc.desc}</p>
-      <a href="#servicios" class="orb-info-cta">Ver servicio completo →</a>
-    </div>`;
-    requestAnimationFrame(() => p.classList.add('orb-info--show'));
-  }
-  function hidePanel() {
-    const p = document.getElementById('orbInfoPanel');
-    if (p) p.classList.remove('orb-info--show');
-  }
-
-  const N = nodes.length;
-  function tick() {
-    if (autoRotate) angle += 0.0025;
-    nodes.forEach(({ el }, i) => {
-      const a = (i / N) * Math.PI * 2 + angle;
-      const x = Math.cos(a) * radius;
-      const y = Math.sin(a) * radius * 0.4; // flatten to ellipse
-      const depth = (Math.sin(a - Math.PI / 2) + 1) / 2;
-      el.style.transform = `translate(${x}px, ${y}px) scale(${0.72 + depth * 0.36})`;
-      el.style.opacity   = String(0.3 + depth * 0.7);
-      el.style.zIndex    = String(Math.round(depth * 90 + 10));
-    });
-    rafId = requestAnimationFrame(tick);
-  }
-
-  // Pause when off screen
-  const io = new IntersectionObserver(entries => {
-    if (entries[0].isIntersecting) tick();
-    else cancelAnimationFrame(rafId);
-  }, { threshold: 0.1 });
-  io.observe(stage);
 }
 
+// ── Matrix Text Effect for headings ───────────────────────────────────
+function initMatrixText() {
+  const STAGGER  = 60;
+  const DURATION = 420;
+
+  function wrapLetters(el) {
+    const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    const nodes  = [];
+    let n;
+    while ((n = walker.nextNode())) nodes.push(n);
+    nodes.forEach(tn => {
+      const frag = document.createDocumentFragment();
+      [...tn.textContent].forEach(ch => {
+        if (ch === ' ' || ch === '\n') {
+          frag.appendChild(document.createTextNode(ch));
+        } else {
+          const s = document.createElement('span');
+          s.className    = 'mx-letter';
+          s.dataset.char = ch;
+          s.textContent  = ch;
+          frag.appendChild(s);
+        }
+      });
+      tn.parentNode.replaceChild(frag, tn);
+    });
+  }
+
+  function triggerMatrix(el) {
+    const spans = Array.from(el.querySelectorAll('.mx-letter'));
+    if (!spans.length) return;
+    spans.forEach((s, i) => {
+      setTimeout(() => {
+        s.textContent = Math.random() > 0.5 ? '1' : '0';
+        s.classList.add('mx-active');
+        setTimeout(() => {
+          s.textContent = s.dataset.char;
+          s.classList.remove('mx-active');
+        }, DURATION);
+      }, i * STAGGER);
+    });
+  }
+
+  document.querySelectorAll('h2, h3').forEach(el => {
+    wrapLetters(el);
+    const io = new IntersectionObserver(entries => {
+      if (!entries[0].isIntersecting) return;
+      setTimeout(() => triggerMatrix(el), 150);
+      io.disconnect();
+    }, { threshold: 0.4 });
+    io.observe(el);
+    el.addEventListener('mouseenter', () => triggerMatrix(el));
+  });
+}
+
+// TeamCanvas (Expertos section canvas illustration) removed — dead code,
+// never instantiated anywhere; .tech-img-frame renders a plain <video> instead.
 // ─── Entry Point ──────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   initLoader(() => {
@@ -1487,8 +1373,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const contactCanvas = document.getElementById('contactCanvas');
     if (contactCanvas) new SectionParticles(contactCanvas);
 
-    // Neural Sphere
-    initNeuralSphere();
+    const teamCanvas = document.getElementById('teamCanvas');
+    if (teamCanvas) new MatrixRain(teamCanvas);
 
     // Service card visualizations
     initSvcViz();
@@ -1496,35 +1382,36 @@ document.addEventListener('DOMContentLoaded', () => {
     // Service card accordion
     initServiceAccordion();
 
+
+    // GTM DataLayer tracking
+    initGTMTracking();
+
+    // Matrix text effect on all headings
+    initMatrixText();
+
     // Shader background + Gooey text + Text cycle
     initShaderBg();
     initGooeyText();
     initTextCycle();
 
-    // Hide Spline watermark via shadow DOM
-    const splineEl = document.querySelector('.neural-spline');
-    if (splineEl) {
-      const tryHide = () => {
-        const root = splineEl.shadowRoot;
-        if (root) {
-          const badge = root.querySelector('#logo, .logo, [class*="logo"], a[href*="spline"]');
-          if (badge) { badge.style.display = 'none'; return; }
-        }
-        setTimeout(tryHide, 800);
-      };
-      setTimeout(tryHide, 1500);
-    }
-
     // Interactions
-    new Cursor();
-    initLenis();
+    const lenis = initLenis();
     initGSAP();
     initAnimeJS();
     initWAAPI();
     initRevealObserver();
     initNavbar();
-    initSmoothScroll();
-    initMagnetic();
-    initTilt();
+    initSmoothScroll(lenis);
+
+    // Cursor / magnetic / tilt are mouse-hover effects — on touch devices
+    // they used to keep running (14 DOM nodes + a live rAF loop + listeners
+    // on every link/card) for a cursor CSS already hides, doing real work
+    // for zero visual benefit. Only wire them up when a fine pointer with
+    // hover is actually present.
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      new Cursor();
+      initMagnetic();
+      initTilt();
+    }
   });
 });
