@@ -209,22 +209,38 @@ img { display: block; max-width: 100%; }
 }
 @media (hover: none) { #cursorDot, #cursorRing, .trail-dot { display: none; } }
 
-/* ─── CIFRAS CLAVE (Nuestro Enfoque) ─── */
-.enfoque-stats {
-  display: flex; flex-direction: column; gap: 1.6rem;
-  padding: 2.4rem 2.2rem;
+/* ─── CÓMO TRABAJAMOS (Nuestro Enfoque) ─── */
+.enfoque-process {
+  position: relative;
+  display: flex; flex-direction: column; gap: 1.8rem;
+  padding: 2.2rem 2.2rem 2rem;
   border: 1.5px solid var(--orange); border-radius: 4px;
   background: rgba(249,115,22,.04);
 }
-.es-item { display: flex; align-items: baseline; gap: 1.2rem; }
-.es-item .mn { font-size: clamp(2rem, 3.2vw, 2.8rem); flex-shrink: 0; min-width: 4.6rem; }
-.es-item p { font-size: .88rem; color: var(--grey); line-height: 1.55; margin: 0; }
-.es-trusted { padding-top: 1.6rem; border-top: 1px solid rgba(249,115,22,.25); }
-.es-trusted span {
+.ep-step { position: relative; display: flex; gap: 1.2rem; align-items: flex-start; }
+.ep-step:not(:last-of-type)::after {
+  content: ''; position: absolute; left: 19px; top: 44px; bottom: -1.8rem;
+  width: 1px; background: rgba(249,115,22,.3);
+}
+.ep-num {
+  position: absolute; top: -.6rem; left: 30px;
+  font-family: var(--mono); font-size: .62rem; letter-spacing: .16em;
+  color: rgba(249,115,22,.6); background: var(--black); padding: 0 4px;
+}
+.ep-icon {
+  flex-shrink: 0; width: 40px; height: 40px; padding: 9px;
+  border: 1.5px solid var(--orange); border-radius: 50%;
+  color: var(--orange); background: var(--black);
+}
+.ep-icon svg { width: 100%; height: 100%; }
+.ep-body strong { display: block; font-size: .95rem; letter-spacing: .04em; color: var(--white); margin-bottom: .35rem; }
+.ep-body p { font-size: .85rem; color: var(--grey); line-height: 1.55; margin: 0; }
+.ep-trusted { padding-top: 1.6rem; border-top: 1px solid rgba(249,115,22,.25); }
+.ep-trusted span {
   display: block; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase;
   color: var(--grey2); margin-bottom: .6rem;
 }
-.es-trusted strong { font-size: .85rem; color: var(--white); font-weight: 500; line-height: 1.7; }
+.ep-trusted strong { font-size: .85rem; color: var(--white); font-weight: 500; line-height: 1.7; }
 
 /* ─── SHARED ─── */
 .container { max-width: 1280px; margin: 0 auto; padding: 0 2.5rem; }
@@ -922,7 +938,7 @@ img { display: block; max-width: 100%; }
   .container { padding: 0 1.2rem; }
   .dh2 { font-size: clamp(1.4rem, 7.5vw, 3rem); line-height: 1.05; }
   .exp-title { font-size: clamp(1.4rem, 7.5vw, 3rem); line-height: 1.05; }
-  .enfoque-stats { padding: 1.8rem 1.6rem; gap: 1.2rem; }
+  .enfoque-process { padding: 1.8rem 1.6rem 1.6rem; gap: 1.4rem; }
 }
 
 /* ══════════════════════════════════════════════════
