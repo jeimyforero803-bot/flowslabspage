@@ -834,11 +834,12 @@ function initGSAP() {
 }
 
 // ══════════════════════════════════════════════════════════════════════
-// SKILL: Anime.js — Letter stagger on service numbers (svc-num)
+// SKILL: GSAP — Letter stagger on service numbers (svc-num)
 // Creates a typewriter-ripple that runs when card enters viewport
+// (migrado de Anime.js — GSAP ya estaba cargado, evita una librería extra)
 // ══════════════════════════════════════════════════════════════════════
 function initAnimeJS() {
-  if (typeof anime === 'undefined') return;
+  if (typeof gsap === 'undefined') return;
 
   // ─ Stagger svc-num on scroll enter
   const observer = new IntersectionObserver(entries => {
@@ -848,12 +849,9 @@ function initAnimeJS() {
       const text  = numEl.textContent.trim();
       // Split into chars
       numEl.innerHTML = text.split('').map(c => `<span class="letter" style="display:inline-block">${c}</span>`).join('');
-      anime({
-        targets: numEl.querySelectorAll('.letter'),
-        translateY: [{ value: -14, duration: 0 }, { value: 0, duration: 400, easing: 'easeOutElastic(1,.5)' }],
-        opacity:    [{ value: 0, duration: 0 }, { value: 1, duration: 300 }],
-        delay:      anime.stagger(60),
-      });
+      gsap.fromTo(numEl.querySelectorAll('.letter'),
+        { y: -14, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.4, stagger: 0.06, ease: 'elastic.out(1, 0.5)' });
       observer.unobserve(numEl);
     });
   }, { threshold: 0.6 });
@@ -864,8 +862,10 @@ function initAnimeJS() {
   const navLogo = document.querySelector('.nav-logo img');
   if (navLogo) {
     navLogo.addEventListener('mouseenter', () => {
-      anime({ targets: navLogo, skewX: [0, 3, -2, 0], scale: [1, 1.06, 1],
-              duration: 500, easing: 'easeInOutSine' });
+      gsap.timeline()
+        .to(navLogo, { skewX: 3, scale: 1.06, duration: 0.15, ease: 'sine.inOut' })
+        .to(navLogo, { skewX: -2, scale: 1, duration: 0.2, ease: 'sine.inOut' })
+        .to(navLogo, { skewX: 0, duration: 0.15, ease: 'sine.inOut' });
     });
   }
 }
@@ -1031,6 +1031,31 @@ function initGooeyText() {
   if (!span1 || !span2) return;
 
   const texts = ['Inteligencia Artificial', 'Automatización', 'Marketing Digital', 'Análisis de Datos', 'Predicción'];
+
+  // Mobile: the blob-merge relies on a per-frame rAF blur loop plus an SVG
+  // filter referenced via CSS url() — heavy on phone CPUs and unreliable on
+  // iOS Safari. Use the same lightweight crossfade as the text-cycle CTA.
+  if (window.innerWidth < 768) {
+    const inner = container.querySelector('.gooey-inner');
+    if (inner) inner.style.filter = 'none';
+    span2.style.display = 'none';
+    let i = 0;
+    span1.textContent = texts[0];
+    span1.classList.add('cycle-visible');
+    setInterval(() => {
+      span1.classList.remove('cycle-visible');
+      span1.classList.add('cycle-exit');
+      setTimeout(() => {
+        i = (i + 1) % texts.length;
+        span1.textContent = texts[i];
+        span1.classList.remove('cycle-exit');
+        void span1.offsetWidth;
+        span1.classList.add('cycle-visible');
+      }, 300);
+    }, 2200);
+    return;
+  }
+
   const morphTime = 1.1, cooldownTime = 0.35;
 
   let textIndex = texts.length - 1;
@@ -1073,6 +1098,60 @@ function initGooeyText() {
     }
   };
   tick();
+}
+
+// ── Team panel dashboard mockup — interactive range filters ───────────
+function initDashMock() {
+  const wrap = document.getElementById('dashMock');
+  if (!wrap) return;
+  const filters = document.getElementById('dashFilters');
+  const kpiLeads  = document.getElementById('dashKpiLeads');
+  const kpiTime   = document.getElementById('dashKpiTime');
+  const kpiUptime = document.getElementById('dashKpiUptime');
+  const line = document.getElementById('dashLine');
+  const area = document.getElementById('dashArea');
+  const bars = document.querySelectorAll('#dashBars span');
+
+  const DATA = {
+    hoy: {
+      leads: '42', time: '1.4s', uptime: '99.7%',
+      pts: '0,78 40,74 80,76 120,66 160,70 200,58 240,62 300,50',
+      bars: [24, 32, 20, 38, 28, 44, 34, 48]
+    },
+    '7d': {
+      leads: '312', time: '1.2s', uptime: '99.9%',
+      pts: '0,70 40,58 80,62 120,38 160,44 200,20 240,26 300,8',
+      bars: [42, 64, 50, 78, 56, 88, 70, 96]
+    },
+    '30d': {
+      leads: '1,180', time: '1.1s', uptime: '99.95%',
+      pts: '0,60 40,50 80,54 120,30 160,36 200,14 240,18 300,4',
+      bars: [55, 72, 60, 85, 68, 92, 80, 100]
+    }
+  };
+
+  function render(key) {
+    const d = DATA[key];
+    if (!d) return;
+    [kpiLeads, kpiTime, kpiUptime, line, area].forEach(el => el.style.opacity = '0');
+    setTimeout(() => {
+      kpiLeads.textContent  = d.leads;
+      kpiTime.textContent   = d.time;
+      kpiUptime.textContent = d.uptime;
+      line.setAttribute('points', d.pts);
+      area.setAttribute('points', d.pts + ' 300,90 0,90');
+      [kpiLeads, kpiTime, kpiUptime, line, area].forEach(el => el.style.opacity = '1');
+    }, 160);
+    bars.forEach((b, i) => { b.style.setProperty('--h', d.bars[i] + '%'); });
+  }
+
+  filters.addEventListener('click', e => {
+    const btn = e.target.closest('.dash-filter[data-range]');
+    if (!btn) return;
+    filters.querySelectorAll('.dash-filter').forEach(f => f.classList.remove('active'));
+    btn.classList.add('active');
+    render(btn.dataset.range);
+  });
 }
 
 // ── Animated Text Cycle (CTA before contacto) ─────────────────────────
@@ -1358,14 +1437,15 @@ function initMatrixText() {
   });
 }
 
-// TeamCanvas (Expertos section canvas illustration) removed — dead code,
-// never instantiated anywhere; .tech-img-frame renders a plain <video> instead.
 // ─── Entry Point ──────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   initLoader(() => {
-    // 3D + canvas effects
+    // 3D + canvas effects — two concurrent WebGL contexts in the hero (this
+    // circuit + the plasma shader below) are too heavy for mobile GPUs and
+    // make first scroll feel janky, so they're desktop-only. Mobile gets a
+    // plain CSS gradient instead (see .hero @media rule in styles.css).
     const threeCanvas = document.getElementById('threeCanvas');
-    if (threeCanvas && typeof THREE !== 'undefined') new ThreeCircuit(threeCanvas);
+    if (threeCanvas && typeof THREE !== 'undefined' && window.innerWidth >= 768) new ThreeCircuit(threeCanvas);
 
     const matrixCanvas = document.getElementById('matrixCanvas');
     if (matrixCanvas) new MatrixRain(matrixCanvas);
@@ -1373,15 +1453,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const contactCanvas = document.getElementById('contactCanvas');
     if (contactCanvas) new SectionParticles(contactCanvas);
 
-    const teamCanvas = document.getElementById('teamCanvas');
-    if (teamCanvas) new MatrixRain(teamCanvas);
-
     // Service card visualizations
     initSvcViz();
 
     // Service card accordion
     initServiceAccordion();
 
+    // Team panel dashboard mockup
+    initDashMock();
 
     // GTM DataLayer tracking
     initGTMTracking();
@@ -1390,7 +1469,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initMatrixText();
 
     // Shader background + Gooey text + Text cycle
-    initShaderBg();
+    if (window.innerWidth >= 768) initShaderBg();
     initGooeyText();
     initTextCycle();
 
