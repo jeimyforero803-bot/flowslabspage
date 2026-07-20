@@ -1,161 +1,7 @@
 /* ═══════════════════════════════════════════════════════════════════
    FLOWSLABS — Ultra Premium Experience v4.0
-   Three.js 3D Circuit · Lenis Smooth Scroll · GSAP Hero · Scroll Bot
+   Lenis Smooth Scroll · GSAP Hero · Scroll Bot
    ═══════════════════════════════════════════════════════════════════ */
-
-// ── Three.js 3D Circuit Network ─────────────────────────────────────
-class ThreeCircuit {
-  constructor(canvas) {
-    this.canvas   = canvas;
-    this.scene    = new THREE.Scene();
-    this.camera   = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-    this.renderer = new THREE.WebGLRenderer({ canvas, antialias: window.innerWidth >= 768, alpha: true });
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, window.innerWidth < 768 ? 1.5 : 2));
-    this.camera.position.set(0, 0, 38);
-
-    this.mouse  = { x: 0, y: 0 };
-    this.rot    = { x: 0, y: 0 };
-    this.nodes  = [];
-    this.time   = 0;
-    this._vis   = true;
-    this._run   = false;
-
-    this.ORANGE = new THREE.Color('#F97316');
-    this.TEAL   = new THREE.Color('#1A6478');
-    this.WHITE  = new THREE.Color('#FFFFFF');
-
-    this.buildNodes();
-    this.buildLines();
-    this.buildChips();
-    this.bindEvents();
-    this.tick();
-  }
-
-  buildNodes() {
-    const count = window.innerWidth < 768 ? 22 : 48;
-    for (let i = 0; i < count; i++) {
-      const size = Math.random() * .28 + .07;
-      const geo  = new THREE.SphereGeometry(size, 8, 8);
-      const r    = Math.random();
-      const col  = r < .45 ? this.ORANGE : r < .85 ? this.TEAL : this.WHITE;
-      const mat  = new THREE.MeshBasicMaterial({ color: col.clone(), transparent: true, opacity: Math.random() * .14 + .05 });
-      const mesh = new THREE.Mesh(geo, mat);
-      const spread = 30;
-      mesh.position.set(
-        (Math.random() - .5) * spread * 2,
-        (Math.random() - .5) * spread * 1.2,
-        (Math.random() - .5) * spread * .7
-      );
-      mesh.userData = {
-        vx: (Math.random() - .5) * .018,
-        vy: (Math.random() - .5) * .013,
-        vz: (Math.random() - .5) * .009,
-        base: mat.opacity,
-        phase: Math.random() * Math.PI * 2
-      };
-      this.scene.add(mesh);
-      this.nodes.push(mesh);
-    }
-  }
-
-  buildLines() {
-    const max = 140;
-    const pos = new Float32Array(max * 2 * 3);
-    const col = new Float32Array(max * 2 * 3);
-    const geo = new THREE.BufferGeometry();
-    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    geo.setAttribute('color',    new THREE.BufferAttribute(col, 3));
-    const mat = new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: .10 });
-    this.lines = new THREE.LineSegments(geo, mat);
-    this.scene.add(this.lines);
-    this.lPos = pos; this.lCol = col; this.lMax = max;
-  }
-
-  buildChips() {
-    for (let i = 0; i < 12; i++) {
-      const size = Math.random() * 1.2 + .4;
-      const geo  = new THREE.BoxGeometry(size, size, .05);
-      const col  = Math.random() > .5 ? this.ORANGE : this.TEAL;
-      const mat  = new THREE.MeshBasicMaterial({ color: col, wireframe: true, transparent: true, opacity: .15 });
-      const mesh = new THREE.Mesh(geo, mat);
-      mesh.position.set((Math.random() - .5) * 50, (Math.random() - .5) * 30, (Math.random() - .5) * 15);
-      mesh.rotation.set(Math.random(), Math.random(), Math.random());
-      mesh.userData.rotV = { x: (Math.random() - .5) * .003, y: (Math.random() - .5) * .003 };
-      this.scene.add(mesh);
-      this.nodes.push(mesh);
-    }
-  }
-
-  updateLines() {
-    let idx = 0;
-    const maxD = 12;
-    const spheres = this.nodes.filter(n => n.geometry.type === 'SphereGeometry');
-    for (let i = 0; i < spheres.length && idx < this.lMax; i++) {
-      for (let j = i + 1; j < spheres.length && idx < this.lMax; j++) {
-        const d = spheres[i].position.distanceTo(spheres[j].position);
-        if (d < maxD) {
-          const a = (1 - d / maxD) * .7;
-          const ci = spheres[i].material.color;
-          const cj = spheres[j].material.color;
-          this.lPos.set([spheres[i].position.x, spheres[i].position.y, spheres[i].position.z, spheres[j].position.x, spheres[j].position.y, spheres[j].position.z], idx * 6);
-          this.lCol.set([ci.r*a, ci.g*a, ci.b*a, cj.r*a, cj.g*a, cj.b*a], idx * 6);
-          idx++;
-        }
-      }
-    }
-    this.lines.geometry.setDrawRange(0, idx * 2);
-    this.lines.geometry.attributes.position.needsUpdate = true;
-    this.lines.geometry.attributes.color.needsUpdate = true;
-  }
-
-  bindEvents() {
-    window.addEventListener('resize', () => {
-      this.camera.aspect = window.innerWidth / window.innerHeight;
-      this.camera.updateProjectionMatrix();
-      this.renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-    window.addEventListener('mousemove', e => {
-      this.mouse.x = (e.clientX / window.innerWidth  - .5) * 2;
-      this.mouse.y = (e.clientY / window.innerHeight - .5) * 2;
-    });
-    // Real visibility gating — the previous scroll-position heuristic kept
-    // at least one requestAnimationFrame alive for the entire page lifetime;
-    // this fully stops the loop once the hero canvas leaves the viewport.
-    const io = new IntersectionObserver(entries => {
-      this._vis = entries[0].isIntersecting;
-      if (this._vis && !this._run) this.tick();
-    }, { threshold: 0 });
-    io.observe(this.canvas);
-  }
-
-  tick() {
-    if (!this._vis || document.hidden) { this._run = false; return; }
-    this._run = true;
-    requestAnimationFrame(() => this.tick());
-    this.time += .01;
-    this.nodes.forEach(n => {
-      if (n.geometry.type === 'SphereGeometry') {
-        n.position.x += n.userData.vx;
-        n.position.y += n.userData.vy;
-        n.position.z += n.userData.vz;
-        if (Math.abs(n.position.x) > 34) n.userData.vx *= -1;
-        if (Math.abs(n.position.y) > 22) n.userData.vy *= -1;
-        if (Math.abs(n.position.z) > 16) n.userData.vz *= -1;
-        n.material.opacity = n.userData.base + Math.sin(this.time + n.userData.phase) * .14;
-      } else {
-        n.rotation.x += n.userData.rotV.x;
-        n.rotation.y += n.userData.rotV.y;
-      }
-    });
-    this.rot.y += (this.mouse.x * .55 - this.rot.y) * .04;
-    this.rot.x += (this.mouse.y * .32 - this.rot.x) * .04;
-    this.scene.rotation.y = this.rot.y;
-    this.scene.rotation.x = this.rot.x;
-    this.updateLines();
-    this.renderer.render(this.scene, this.camera);
-  }
-}
 
 // ── Matrix Rain ──────────────────────────────────────────────────────
 class MatrixRain {
@@ -651,6 +497,7 @@ class Cursor {
     if (!this.dot) return;
     this.mx = 0; this.my = 0;
     this.rx = 0; this.ry = 0;
+    this._running = true;
     const container = document.getElementById('cursorTrail');
     const N = 14;
     this.trail  = [];
@@ -671,6 +518,7 @@ class Cursor {
       this.mx = e.clientX; this.my = e.clientY;
       this.dot.style.left = e.clientX + 'px';
       this.dot.style.top  = e.clientY + 'px';
+      if (!this._running) { this._running = true; this.loop(); }
     });
     document.addEventListener('mousedown', () => {
       this.dot.classList.add('clicked');
@@ -688,13 +536,19 @@ class Cursor {
     this.ring.style.top  = this.ry + 'px';
     this.trailX[0] = this.mx;
     this.trailY[0] = this.my;
+    let settled = Math.abs(this.mx - this.rx) < .05 && Math.abs(this.my - this.ry) < .05;
     for (let i = 1; i < this.trail.length; i++) {
       this.trailX[i] += (this.trailX[i-1] - this.trailX[i]) * (.18 - i * .008);
       this.trailY[i] += (this.trailY[i-1] - this.trailY[i]) * (.18 - i * .008);
       this.trail[i].style.left = this.trailX[i] + 'px';
       this.trail[i].style.top  = this.trailY[i] + 'px';
+      settled = settled && Math.abs(this.trailX[i-1] - this.trailX[i]) < .05 && Math.abs(this.trailY[i-1] - this.trailY[i]) < .05;
     }
-    requestAnimationFrame(() => this.loop());
+    // Stop polling once the trail has fully caught up to the cursor — a
+    // stationary mouse no longer needs 60 style writes/sec forever.
+    // mousemove (see bind()) restarts the loop.
+    this._running = !settled;
+    if (this._running) requestAnimationFrame(() => this.loop());
   }
 }
 
@@ -1440,13 +1294,6 @@ function initMatrixText() {
 // ─── Entry Point ──────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   initLoader(() => {
-    // 3D + canvas effects — two concurrent WebGL contexts in the hero (this
-    // circuit + the plasma shader below) are too heavy for mobile GPUs and
-    // make first scroll feel janky, so they're desktop-only. Mobile gets a
-    // plain CSS gradient instead (see .hero @media rule in styles.css).
-    const threeCanvas = document.getElementById('threeCanvas');
-    if (threeCanvas && typeof THREE !== 'undefined' && window.innerWidth >= 768) new ThreeCircuit(threeCanvas);
-
     const matrixCanvas = document.getElementById('matrixCanvas');
     if (matrixCanvas) new MatrixRain(matrixCanvas);
 
