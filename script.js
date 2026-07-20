@@ -516,8 +516,7 @@ class Cursor {
   bind() {
     document.addEventListener('mousemove', e => {
       this.mx = e.clientX; this.my = e.clientY;
-      this.dot.style.left = e.clientX + 'px';
-      this.dot.style.top  = e.clientY + 'px';
+      this.dot.style.transform = `translate(${e.clientX}px,${e.clientY}px) translate(-50%,-50%)`;
       if (!this._running) { this._running = true; this.loop(); }
     });
     document.addEventListener('mousedown', () => {
@@ -532,16 +531,14 @@ class Cursor {
   loop() {
     this.rx += (this.mx - this.rx) * .1;
     this.ry += (this.my - this.ry) * .1;
-    this.ring.style.left = this.rx + 'px';
-    this.ring.style.top  = this.ry + 'px';
+    this.ring.style.transform = `translate(${this.rx}px,${this.ry}px) translate(-50%,-50%)`;
     this.trailX[0] = this.mx;
     this.trailY[0] = this.my;
     let settled = Math.abs(this.mx - this.rx) < .05 && Math.abs(this.my - this.ry) < .05;
     for (let i = 1; i < this.trail.length; i++) {
       this.trailX[i] += (this.trailX[i-1] - this.trailX[i]) * (.18 - i * .008);
       this.trailY[i] += (this.trailY[i-1] - this.trailY[i]) * (.18 - i * .008);
-      this.trail[i].style.left = this.trailX[i] + 'px';
-      this.trail[i].style.top  = this.trailY[i] + 'px';
+      this.trail[i].style.transform = `translate(${this.trailX[i]}px,${this.trailY[i]}px) translate(-50%,-50%)`;
       settled = settled && Math.abs(this.trailX[i-1] - this.trailX[i]) < .05 && Math.abs(this.trailY[i-1] - this.trailY[i]) < .05;
     }
     // Stop polling once the trail has fully caught up to the cursor — a
@@ -1024,8 +1021,12 @@ function initTextCycle() {
       index = (index + 1) % words.length;
       el.textContent = words[index];
       el.classList.remove('cycle-exit');
-      void el.offsetWidth; // force reflow
-      el.classList.add('cycle-visible');
+      // Two rAFs let the browser paint the class removal before we add
+      // 'cycle-visible', so the transition restarts — same effect as
+      // reading offsetWidth, without the forced synchronous reflow.
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        el.classList.add('cycle-visible');
+      }));
     }, 300);
   }, 3000);
 }
